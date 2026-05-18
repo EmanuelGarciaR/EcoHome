@@ -1,26 +1,47 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-brand: #29C76C;
+  --color-brand-hover: #24B863;
+  --color-brand-soft: #D6F0E8;
+
+  --color-app-bg: #EDEEF1;
+  --color-app-card: #FBFCFC;
+  --color-app-darkCard: #141D1C;
+
+  --color-text-primary: #141D1C;
+  --color-text-secondary: #46544E;
+  --color-text-muted: #94A59D;
+  --color-text-onDark: #FFFFFF;
+
+  --color-border-light: #C0CFCB;
+  --color-border-subtle: #EDEEF1;
+
+  --color-success-bg: #D6F0E8;
+  --color-success-text: #29C76C;
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer components {
+  .card {
+    @apply bg-app-card border border-border-light rounded-2xl shadow-sm p-5;
+  }
+  
+  .btn-primary {
+    @apply inline-flex items-center justify-center bg-brand text-white hover:bg-brand-hover rounded-2xl px-4 py-2 font-medium transition-colors;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center bg-brand-soft text-brand hover:bg-brand hover:text-white rounded-2xl px-4 py-2 font-medium transition-colors;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-app-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
