@@ -1,7 +1,20 @@
+'use client';
+
 import React from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { LayoutDashboard, Zap, Bell, FileText, Leaf } from 'lucide-react';
 
 export default function Sidebar() {
+  const pathname = usePathname();
+
+  const navItems = [
+    { name: 'Dashboard', href: '/', icon: LayoutDashboard },
+    { name: 'Consumption', href: '/dashboard/consumption', icon: Zap },
+    { name: 'Alerts', href: '/dashboard/alerts', icon: Bell },
+    { name: 'Reports', href: '/dashboard/reports', icon: FileText },
+  ];
+
   return (
     <aside className="w-[240px] bg-app-card border-r border-border-light p-5 flex flex-col justify-between h-[calc(100vh-64px)] sticky top-[64px]">
       
@@ -21,27 +34,25 @@ export default function Sidebar() {
 
         {/* Nav Items */}
         <nav className="flex flex-col gap-2">
-          {/* Active Item */}
-          <a href="#" className="flex items-center gap-3 h-[40px] px-3 rounded-[10px] bg-success-bg text-brand border-l-3 border-brand font-semibold transition-colors">
-            <LayoutDashboard size={18} />
-            <span className="text-sm">Dashboard</span>
-          </a>
-          
-          {/* Inactive Items */}
-          <a href="#" className="flex items-center gap-3 h-[40px] px-3 rounded-[10px] text-text-secondary hover:bg-app-bg hover:text-text-primary transition-colors">
-            <Zap size={18} />
-            <span className="text-sm">Consumption</span>
-          </a>
-          
-          <a href="#" className="flex items-center gap-3 h-[40px] px-3 rounded-[10px] text-text-secondary hover:bg-app-bg hover:text-text-primary transition-colors">
-            <Bell size={18} />
-            <span className="text-sm">Alerts</span>
-          </a>
-          
-          <a href="#" className="flex items-center gap-3 h-[40px] px-3 rounded-[10px] text-text-secondary hover:bg-app-bg hover:text-text-primary transition-colors">
-            <FileText size={18} />
-            <span className="text-sm">Reports</span>
-          </a>
+          {navItems.map((item) => {
+            const isActive = pathname === item.href;
+            const Icon = item.icon;
+            
+            return (
+              <Link 
+                key={item.name}
+                href={item.href} 
+                className={`flex items-center gap-3 h-[40px] px-3 rounded-[10px] transition-colors ${
+                  isActive 
+                    ? 'bg-success-bg text-brand border-l-3 border-brand font-semibold' 
+                    : 'text-text-secondary hover:bg-app-bg hover:text-text-primary'
+                }`}
+              >
+                <Icon size={18} />
+                <span className="text-sm">{item.name}</span>
+              </Link>
+            );
+          })}
         </nav>
       </div>
 
