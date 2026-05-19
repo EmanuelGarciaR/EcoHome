@@ -13,34 +13,23 @@ interface AlertCardProps {
 export default function AlertCard({ alert, isRead = false, isHighlighted = false, onMarkRead, onViewDetails }: AlertCardProps) {
   const getTypeStyles = (type: string) => {
     switch (type) {
-      case 'savings': return { border: 'border-l-[#1D9E75]', badgeBg: 'bg-[#D1FAE5]', badgeText: 'text-[#065F46]' };
-      case 'peak': return { border: 'border-l-[#EF4444]', badgeBg: 'bg-[#FEE2E2]', badgeText: 'text-[#991B1B]' };
-      case 'carbon': return { border: 'border-l-[#3B82F6]', badgeBg: 'bg-[#DBEAFE]', badgeText: 'text-[#1E40AF]' };
-      case 'scheduling': return { border: 'border-l-[#8B5CF6]', badgeBg: 'bg-[#EDE9FE]', badgeText: 'text-[#5B21B6]' };
-      case 'achievement': return { border: 'border-l-[#F59E0B]', badgeBg: 'bg-[#FEF3C7]', badgeText: 'text-[#92400E]' };
-      default: return { border: 'border-l-gray-300', badgeBg: 'bg-gray-100', badgeText: 'text-gray-800' };
+      case 'savings': return { border: 'border-l-[#1D9E75]', badgeBg: 'bg-[#D1FAE5]', badgeText: 'text-[#065F46]', iconColor: 'text-[#1D9E75]', iconBg: 'bg-[#1D9E75]/10' };
+      case 'peak': return { border: 'border-l-[#EF4444]', badgeBg: 'bg-[#FEE2E2]', badgeText: 'text-[#991B1B]', iconColor: 'text-[#EF4444]', iconBg: 'bg-[#EF4444]/10' };
+      case 'carbon': return { border: 'border-l-[#3B82F6]', badgeBg: 'bg-[#DBEAFE]', badgeText: 'text-[#1E40AF]', iconColor: 'text-[#3B82F6]', iconBg: 'bg-[#3B82F6]/10' };
+      case 'scheduling': return { border: 'border-l-[#8B5CF6]', badgeBg: 'bg-[#EDE9FE]', badgeText: 'text-[#5B21B6]', iconColor: 'text-[#8B5CF6]', iconBg: 'bg-[#8B5CF6]/10' };
+      case 'achievement': return { border: 'border-l-[#F59E0B]', badgeBg: 'bg-[#FEF3C7]', badgeText: 'text-[#92400E]', iconColor: 'text-[#F59E0B]', iconBg: 'bg-[#F59E0B]/10' };
+      default: return { border: 'border-l-gray-300', badgeBg: 'bg-gray-100', badgeText: 'text-gray-800', iconColor: 'text-gray-500', iconBg: 'bg-gray-100' };
     }
   };
 
-  const getIcon = (type: string) => {
+  const getIcon = (type: string, colorClass: string) => {
     switch (type) {
-      case 'savings': return <TrendingDown size={18} className="text-[#1D9E75]" />;
-      case 'peak': return <AlertCircle size={18} className="text-[#EF4444]" />;
-      case 'carbon': return <Leaf size={18} className="text-[#1D9E75]" />;
-      case 'scheduling': return <Calendar size={18} className="text-[#3B82F6]" />;
-      case 'achievement': return <Award size={18} className="text-[#8B5CF6]" />;
+      case 'savings': return <TrendingDown size={18} className={colorClass} />;
+      case 'peak': return <AlertCircle size={18} className={colorClass} />;
+      case 'carbon': return <Leaf size={18} className={colorClass} />;
+      case 'scheduling': return <Calendar size={18} className={colorClass} />;
+      case 'achievement': return <Award size={18} className={colorClass} />;
       default: return null;
-    }
-  };
-
-  const getIconBg = (type: string) => {
-    switch (type) {
-      case 'savings': return 'bg-[#1D9E75]/10';
-      case 'peak': return 'bg-[#EF4444]/10';
-      case 'carbon': return 'bg-[#1D9E75]/10';
-      case 'scheduling': return 'bg-[#3B82F6]/10';
-      case 'achievement': return 'bg-[#8B5CF6]/10';
-      default: return 'bg-gray-100';
     }
   };
 
@@ -48,11 +37,11 @@ export default function AlertCard({ alert, isRead = false, isHighlighted = false
   const showNew = alert.isNew && !isRead;
 
   return (
-    <article className={`border border-border-light rounded-[12px] p-5 flex gap-4 ${styles.border} border-l-[4px] shadow-sm relative transition-all duration-500 ${isHighlighted ? 'bg-yellow-50' : 'bg-app-card'} ${isRead ? 'opacity-60' : 'opacity-100'}`}>
+    <article className={`border border-border-light rounded-[12px] p-5 flex gap-4 ${styles.border} border-l-[4px] shadow-sm relative transition-all duration-300 hover:-translate-y-1 hover:shadow-md cursor-default ${isHighlighted ? 'bg-yellow-50' : 'bg-app-card'} ${isRead ? 'opacity-60 hover:opacity-100' : 'opacity-100'}`}>
       
       {/* Icon */}
-      <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${getIconBg(alert.type)}`}>
-        {getIcon(alert.type)}
+      <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${styles.iconBg}`}>
+        {getIcon(alert.type, styles.iconColor)}
       </div>
 
       {/* Content */}
