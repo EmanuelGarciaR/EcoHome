@@ -1,20 +1,23 @@
 import React from 'react';
 import { Alert } from '@/src/lib/mockData';
-import { TrendingDown, AlertCircle, Leaf, Calendar, Award, Check } from 'lucide-react';
+import { TrendingDown, AlertCircle, Leaf, Calendar, Award, Check, CheckCheck } from 'lucide-react';
 
 interface AlertCardProps {
   alert: Alert;
+  isRead?: boolean;
+  onMarkRead?: () => void;
+  onViewDetails?: () => void;
 }
 
-export default function AlertCard({ alert }: AlertCardProps) {
-  const getBorderColor = (type: string) => {
+export default function AlertCard({ alert, isRead = false, onMarkRead, onViewDetails }: AlertCardProps) {
+  const getTypeStyles = (type: string) => {
     switch (type) {
-      case 'savings': return 'border-l-[#1D9E75]';
-      case 'peak': return 'border-l-[#EF4444]';
-      case 'carbon': return 'border-l-[#1D9E75]';
-      case 'scheduling': return 'border-l-[#3B82F6]';
-      case 'achievement': return 'border-l-[#8B5CF6]';
-      default: return 'border-l-gray-300';
+      case 'savings': return { border: 'border-l-[#1D9E75]', badgeBg: 'bg-[#D1FAE5]', badgeText: 'text-[#065F46]' };
+      case 'peak': return { border: 'border-l-[#EF4444]', badgeBg: 'bg-[#FEE2E2]', badgeText: 'text-[#991B1B]' };
+      case 'carbon': return { border: 'border-l-[#3B82F6]', badgeBg: 'bg-[#DBEAFE]', badgeText: 'text-[#1E40AF]' };
+      case 'scheduling': return { border: 'border-l-[#8B5CF6]', badgeBg: 'bg-[#EDE9FE]', badgeText: 'text-[#5B21B6]' };
+      case 'achievement': return { border: 'border-l-[#F59E0B]', badgeBg: 'bg-[#FEF3C7]', badgeText: 'text-[#92400E]' };
+      default: return { border: 'border-l-gray-300', badgeBg: 'bg-gray-100', badgeText: 'text-gray-800' };
     }
   };
 
@@ -40,8 +43,12 @@ export default function AlertCard({ alert }: AlertCardProps) {
     }
   };
 
+  const styles = getTypeStyles(alert.type);
+  const showNew = alert.isNew && !isRead;
+
   return (
-    <article className={`bg-app-card border border-border-light rounded-[12px] p-5 flex gap-4 ${getBorderColor(alert.type)} border-l-[4px] shadow-sm`}>
+    <article className={`bg-app-card border border-border-light rounded-[12px] p-5 flex gap-4 ${styles.border} border-l-[4px] shadow-sm relative transition-opacity duration-300 ${isRead ? 'opacity-60' : 'opacity-100'}`}>
+      
       {/* Icon */}
       <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${getIconBg(alert.type)}`}>
         {getIcon(alert.type)}
@@ -53,7 +60,17 @@ export default function AlertCard({ alert }: AlertCardProps) {
           <div className="flex items-center gap-2">
             <h3 className="font-bold text-text-primary text-[15px]">{alert.title}</h3>
           </div>
-          <span className="text-xs text-text-muted whitespace-nowrap">{alert.timeAgo}</span>
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-text-muted whitespace-nowrap">{alert.timeAgo}</span>
+            {showNew && (
+              <button onClick={onMarkRead} className="cursor-pointer hover:opacity-80 transition-opacity" title="Marcar como leído">
+                <CheckCheck size={18} color="#9CA3AF" />
+              </button>
+            )}
+            {!showNew && isRead && (
+              <CheckCheck size={18} color="#1D9E75" />
+            )}
+          </div>
         </div>
 
         <p className="text-sm text-text-secondary line-clamp-2 leading-relaxed mb-3">
@@ -63,32 +80,24 @@ export default function AlertCard({ alert }: AlertCardProps) {
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             {alert.highlightText && (
-              <span className={`text-[12px] font-bold px-2 py-0.5 rounded-full ${
-                alert.highlightType === 'saving' ? 'bg-success-bg text-brand' :
-                alert.highlightType === 'warning' ? 'bg-red-50 text-red-600' :
-                alert.highlightType === 'tip' ? 'bg-blue-50 text-blue-600' :
-                'bg-app-bg text-text-secondary'
-              }`}>
+              <span className={`text-[12px] font-bold px-2 py-0.5 rounded-full ${styles.badgeBg} ${styles.badgeText}`}>
                 {alert.highlightText}
               </span>
             )}
-            {alert.isNew && (
+            {showNew && (
               <span className="text-[10px] font-bold uppercase tracking-wider bg-app-bg text-text-secondary px-2 py-0.5 rounded-full">
-                {alert.highlightType === 'saving' ? 'Ahorro' :
-                 alert.highlightType === 'warning' ? 'Aviso' :
-                 alert.highlightType === 'milestone' ? 'Logro' :
-                 alert.highlightType === 'tip' ? 'Consejo' : alert.highlightType}
+                Nuevo
               </span>
             )}
           </div>
           
           <div className="flex items-center gap-4">
-            {alert.isNew && (
-              <button className="text-[12px] font-semibold text-brand flex items-center gap-1 hover:underline">
+            {showNew && (
+              <button onClick={onMarkRead} className="text-[12px] font-semibold text-brand flex items-center gap-1 hover:underline">
                 <Check size={14} /> Marcar como leído
               </button>
             )}
-            <button className="text-[13px] font-semibold text-text-primary hover:underline">
+            <button onClick={onViewDetails} className="text-[13px] font-semibold text-text-primary hover:underline">
               Ver Detalles
             </button>
           </div>

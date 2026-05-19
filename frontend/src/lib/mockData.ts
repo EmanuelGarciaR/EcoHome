@@ -256,3 +256,36 @@ export const mockNextMilestone: Milestone = {
   description: '¡Salva 3 árboles más para desbloquear el siguiente nivel y obtener una consulta exclusiva sobre ahorro de energía!',
   progressPercent: 75
 };
+
+export const mockOlderAlerts: Alert[] = [
+  {
+    id: 'o1',
+    type: 'carbon',
+    title: 'Hito de Reducción de Huella',
+    isNew: false,
+    timeAgo: 'hace 3 días',
+    description: 'Lograste reducir tu huella de carbono un 5% la semana pasada. ¡Sigue así!',
+    highlightText: '5% Reducción',
+    highlightType: 'milestone'
+  },
+  {
+    id: 'o2',
+    type: 'scheduling',
+    title: 'Optimización de Carga Sugerida',
+    isNew: false,
+    timeAgo: 'hace 5 días',
+    description: 'Hemos notado que usas la lavadora en horas pico. Programa su uso para la noche y ahorra más.',
+    highlightText: 'Consejo',
+    highlightType: 'tip'
+  },
+  {
+    id: 'o3',
+    type: 'achievement',
+    title: 'Nuevo Logro Desbloqueado',
+    isNew: false,
+    timeAgo: 'hace 1 semana',
+    description: '¡Felicidades! Has completado el desafío de ahorro energético de este mes.',
+    highlightText: 'Nivel Completado',
+    highlightType: 'milestone'
+  }
+];

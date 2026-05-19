@@ -1,15 +1,41 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import Header from '@/src/components/layout/Header';
 import Sidebar from '@/src/components/layout/Sidebar';
 import AlertCard from '@/src/components/alerts/AlertCard';
 import AchievementCard from '@/src/components/alerts/AchievementCard';
 import MilestoneProgress from '@/src/components/alerts/MilestoneProgress';
-import { mockAlertKpis, mockAlerts, mockAchievements, mockNextMilestone } from '@/src/lib/mockData';
-import { Bell, Leaf, Zap, Calendar } from 'lucide-react';
+import { Alert, mockAlertKpis, mockAlerts, mockOlderAlerts, mockAchievements, mockNextMilestone } from '@/src/lib/mockData';
+import { Bell, Leaf, Zap, Calendar, X, Loader2 } from 'lucide-react';
 
 export default function AlertsPage() {
+  const [readIds, setReadIds] = useState<Set<string>>(new Set());
+  const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null);
+  
+  const [visibleAlerts, setVisibleAlerts] = useState<Alert[]>(mockAlerts);
+  const [isLoadingOlder, setIsLoadingOlder] = useState(false);
+  const [hasLoadedOlder, setHasLoadedOlder] = useState(false);
+
+  const handleLoadOlder = () => {
+    setIsLoadingOlder(true);
+    setTimeout(() => {
+      setVisibleAlerts(prev => [...prev, ...mockOlderAlerts]);
+      setIsLoadingOlder(false);
+      setHasLoadedOlder(true);
+    }, 1200);
+  };
+
+  const handleMarkRead = (id: string) => {
+    setReadIds(prev => {
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
+  };
+
   const kpis = [
-    { label: 'Alertas no leídas', value: mockAlertKpis.unreadAlerts, icon: <Bell size={20} className="text-blue-500" />, iconBg: 'bg-blue-50', border: 'border-blue-500' },
+    { label: 'Alertas no leídas', value: Math.max(0, mockAlertKpis.unreadAlerts - readIds.size), icon: <Bell size={20} className="text-blue-500" />, iconBg: 'bg-blue-50', border: 'border-blue-500' },
     { label: 'Impacto Mensual', value: mockAlertKpis.monthlyImpact, icon: <Leaf size={20} className="text-brand" />, iconBg: 'bg-success-bg', border: 'border-brand' },
     { label: 'Puntuación de Eficiencia', value: mockAlertKpis.efficiencyScore, icon: <Zap size={20} className="text-text-primary" />, iconBg: 'bg-app-bg', border: 'border-border-light' },
     { label: 'Próximo Reporte En', value: `${mockAlertKpis.nextReportDays} Días`, icon: <Calendar size={20} className="text-brand" />, iconBg: 'bg-success-bg', border: 'border-brand' }
@@ -52,14 +78,37 @@ export default function AlertsPage() {
                 </header>
 
                 <div className="flex flex-col gap-4">
-                  {mockAlerts.map(alert => (
-                    <AlertCard key={alert.id} alert={alert} />
+                  {visibleAlerts.map(alert => (
+                    <AlertCard 
+                      key={alert.id} 
+                      alert={alert} 
+                      isRead={readIds.has(alert.id)} 
+                      onMarkRead={() => handleMarkRead(alert.id)} 
+                      onViewDetails={() => setSelectedAlert(alert)}
+                    />
                   ))}
                 </div>
 
-                <button className="w-full mt-6 py-4 bg-white border border-border-light rounded-[12px] text-[13px] font-bold text-text-muted hover:bg-gray-50 transition-colors border-dashed">
-                  Cargar notificaciones anteriores
-                </button>
+                {!hasLoadedOlder ? (
+                  <button 
+                    onClick={handleLoadOlder}
+                    disabled={isLoadingOlder}
+                    className="w-full mt-6 py-4 bg-white border border-border-light rounded-[12px] text-[13px] font-bold text-text-muted hover:bg-gray-50 transition-colors border-dashed flex items-center justify-center gap-2 disabled:opacity-70"
+                  >
+                    {isLoadingOlder ? (
+                      <>
+                        <Loader2 size={16} className="animate-spin" />
+                        Cargando...
+                      </>
+                    ) : (
+                      'Cargar notificaciones anteriores'
+                    )}
+                  </button>
+                ) : (
+                  <div className="w-full mt-6 py-4 text-center text-[13px] font-bold text-text-muted">
+                    Has visto todas las notificaciones ✓
+                  </div>
+                )}
               </div>
 
               {/* Right Column - Achievements */}
@@ -86,6 +135,32 @@ export default function AlertsPage() {
           </main>
         </div>
       </div>
+
+      {/* Details Modal */}
+      {selectedAlert && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setSelectedAlert(null)}>
+          <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-lg" onClick={e => e.stopPropagation()}>
+            <header className="flex justify-between items-start mb-4">
+              <h3 className="text-[18px] font-bold text-text-primary pr-4">{selectedAlert.title}</h3>
+              <button onClick={() => setSelectedAlert(null)} className="text-text-muted hover:text-text-primary">
+                <X size={20} />
+              </button>
+            </header>
+            <div className="text-[14px] text-text-secondary leading-relaxed mb-6">
+              {selectedAlert.description}
+            </div>
+            
+            <div className="flex justify-end pt-4 border-t border-border-light">
+              <button 
+                onClick={() => setSelectedAlert(null)} 
+                className="px-4 py-2 bg-app-bg hover:bg-gray-200 text-text-primary rounded-[10px] text-[13px] font-bold transition-colors"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
