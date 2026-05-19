@@ -18,7 +18,7 @@ export default function ViewRangeFilter({ timeRange, onChange }: ViewRangeFilter
       {/* View Range Section */}
       <section aria-label="View Range">
         <h3 className="text-[11px] font-bold text-text-muted uppercase mb-2 tracking-wider">
-          VIEW RANGE
+          RANGOS
         </h3>
         <nav className="flex flex-col gap-1">
           <button onClick={() => onChange('mensual')} className={getButtonClass('mensual')}>
@@ -36,7 +36,7 @@ export default function ViewRangeFilter({ timeRange, onChange }: ViewRangeFilter
       {/* Category Breakdown Section */}
       <section aria-label="Category Breakdown" className="mt-2">
         <h3 className="text-[11px] font-bold text-text-muted uppercase mb-3 tracking-wider">
-          CATEGORY BREAKDOWN
+          DESGLOSE POR CATEGORÍA
         </h3>
         <ul className="flex flex-col gap-[10px]">
           <li className="flex items-center gap-2 text-[13px] text-text-primary">

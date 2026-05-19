@@ -2,9 +2,13 @@
 
 import React from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { energyData } from '@/src/data/energyData';
+import { TimeSeriesPoint } from '@/src/lib/mockData';
 
-export default function EnergyChart() {
+interface EnergyChartProps {
+  data: TimeSeriesPoint[];
+}
+
+export default function EnergyChart({ data }: EnergyChartProps) {
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
@@ -24,7 +28,7 @@ export default function EnergyChart() {
       <header className="flex justify-between items-start mb-6">
         <div>
           <h2 id="energy-chart-title" className="text-[16px] font-bold text-text-primary">Perfil de Consumo de Energía</h2>
-          <p className="text-[13px] text-text-muted mt-1">Monitoreo en vivo para Marzo 25</p>
+          <p className="text-[13px] text-text-muted mt-1">Monitoreo en vivo</p>
         </div>
         
         {/* Toggle Hourly / Daily (from mockup) */}
@@ -36,7 +40,7 @@ export default function EnergyChart() {
 
       <div className="flex-grow w-full h-full -ml-4 mt-2">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={energyData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+          <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
             <defs>
               <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="var(--color-brand)" stopOpacity={0.15}/>
@@ -45,7 +49,7 @@ export default function EnergyChart() {
             </defs>
             <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="var(--color-border-subtle)" />
             <XAxis 
-              dataKey="time" 
+              dataKey="label" 
               axisLine={false} 
               tickLine={false} 
               tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }}
@@ -61,7 +65,7 @@ export default function EnergyChart() {
             <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'var(--color-border-subtle)', strokeWidth: 2, strokeDasharray: '4 4' }} />
             <Area 
               type="monotone" 
-              dataKey="value" 
+              dataKey="kwh" 
               stroke="var(--color-brand)" 
               strokeWidth={2.5}
               fillOpacity={1} 

@@ -1,32 +1,37 @@
 import React from 'react';
 import { ArrowDownRight, ArrowUpRight } from 'lucide-react';
+import { StatsSummary } from '@/src/lib/mockData';
 
-export default function ConsumptionKPIs() {
+interface ConsumptionKPIsProps {
+  summary: StatsSummary;
+}
+
+export default function ConsumptionKPIs({ summary }: ConsumptionKPIsProps) {
   const kpis = [
     {
       label: 'Consumo Total',
-      value: '428.5',
+      value: summary.month_kwh.toString(),
       unit: 'kWh',
       delta: '↓ 4.4%',
       isPositive: true,
     },
     {
       label: 'Costo Mensual',
-      value: '$384.200',
+      value: `$${summary.month_cost_cop.toLocaleString('es-CO')}`,
       unit: 'COP',
       delta: '↓ 10.2%',
       isPositive: true,
     },
     {
       label: 'Pico de Demanda',
-      value: '4.2',
+      value: (summary.peak_power_w / 1000).toString(),
       unit: 'kW',
       delta: '↑ 6.1%',
       isPositive: false,
     },
     {
       label: 'Impacto Ahorrado',
-      value: '4.5',
+      value: summary.trees_equivalent.toString(),
       unit: 'Árboles',
       delta: '↑ 20%',
       isPositive: true,

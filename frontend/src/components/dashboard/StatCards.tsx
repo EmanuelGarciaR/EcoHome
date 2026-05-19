@@ -1,11 +1,16 @@
 import React from 'react';
 import { Zap, DollarSign, PiggyBank, ArrowUpRight } from 'lucide-react';
+import { StatsSummary } from '@/src/lib/mockData';
 
-export default function StatCards() {
+interface StatCardsProps {
+  summary: StatsSummary;
+}
+
+export default function StatCards({ summary }: StatCardsProps) {
   const stats = [
     {
       label: 'Carga Actual',
-      value: '2.4',
+      value: (summary.current_power_w / 1000).toFixed(2).toString(),
       unit: 'kW',
       delta: '+10%',
       isPositive: false,
@@ -14,7 +19,7 @@ export default function StatCards() {
     },
     {
       label: 'Acumulado del Mes',
-      value: '$142.500',
+      value: `$${summary.month_cost_cop.toLocaleString('es-CO')}`,
       unit: 'COP',
       delta: '+8%',
       isPositive: true,
@@ -23,7 +28,7 @@ export default function StatCards() {
     },
     {
       label: 'Ahorro Estimado',
-      value: '$32.400',
+      value: `$${summary.month_savings_cop.toLocaleString('es-CO')}`,
       unit: 'COP',
       delta: '+12%',
       isPositive: true,

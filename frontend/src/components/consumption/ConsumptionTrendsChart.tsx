@@ -2,17 +2,17 @@
 
 import React from 'react';
 import { ComposedChart, Area, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { consumptionDataByRange } from '@/src/data/consumptionData';
+import { RangePoint, StatsSummary } from '@/src/lib/mockData';
 import { ArrowDown } from 'lucide-react';
 import { TimeRange } from '@/app/dashboard/consumption/page';
 
 interface ConsumptionTrendsChartProps {
   timeRange: TimeRange;
+  data: RangePoint[];
+  summary: StatsSummary;
 }
 
-export default function ConsumptionTrendsChart({ timeRange }: ConsumptionTrendsChartProps) {
-  const data = consumptionDataByRange[timeRange];
-
+export default function ConsumptionTrendsChart({ timeRange, data, summary }: ConsumptionTrendsChartProps) {
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
@@ -20,16 +20,16 @@ export default function ConsumptionTrendsChart({ timeRange }: ConsumptionTrendsC
           <p className="font-semibold mb-2">{label}</p>
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-brand"></span>
-              <span className="text-text-muted text-xs">Actual:</span>
-              <span className="font-bold text-white">{payload[0].value}</span>
+               <span className="w-2 h-2 rounded-full bg-brand"></span>
+               <span className="text-text-muted text-xs">Actual:</span>
+               <span className="font-bold text-white">{payload[0].value} kWh</span>
             </div>
             {payload[1] && (
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-text-muted"></span>
-                <span className="text-text-muted text-xs">Anterior:</span>
-                <span className="font-bold text-text-muted">{payload[1].value}</span>
-              </div>
+               <div className="flex items-center gap-2">
+                 <span className="w-2 h-2 rounded-full bg-text-muted"></span>
+                 <span className="text-text-muted text-xs">Anterior:</span>
+                 <span className="font-bold text-text-muted">{payload[1].value} kWh</span>
+               </div>
             )}
           </div>
         </div>
@@ -73,14 +73,14 @@ export default function ConsumptionTrendsChart({ timeRange }: ConsumptionTrendsC
             
             <Area 
               type="monotone" 
-              dataKey="current" 
+              dataKey="current_kwh" 
               stroke="none" 
               fillOpacity={1} 
               fill="url(#areaGradient)" 
             />
             <Line 
               type="monotone" 
-              dataKey="previous" 
+              dataKey="previous_kwh" 
               stroke="var(--color-text-muted)" 
               strokeWidth={2}
               strokeDasharray="4 4"
@@ -89,7 +89,7 @@ export default function ConsumptionTrendsChart({ timeRange }: ConsumptionTrendsC
             />
             <Line 
               type="monotone" 
-              dataKey="current" 
+              dataKey="current_kwh" 
               stroke="var(--color-brand)" 
               strokeWidth={2.5}
               dot={false}
@@ -104,25 +104,25 @@ export default function ConsumptionTrendsChart({ timeRange }: ConsumptionTrendsC
         <div className="flex flex-col">
           <span className="text-[11px] font-bold text-text-muted uppercase tracking-wider mb-1">Costo de Energía Ahorrado</span>
           <div className="flex items-baseline gap-2">
-            <span className="text-xl font-bold text-text-primary">14.1 kWh</span>
+            <span className="text-xl font-bold text-text-primary">{summary.month_kwh} kWh</span>
           </div>
           <span className="text-xs text-text-muted mt-0.5 flex items-center gap-1">
-            <ArrowDown size={12} className="text-success-text" /> 2.1% del mes pasado
+            <ArrowDown size={12} className="text-success-text" /> Uso total mensual
           </span>
         </div>
 
         <div className="flex flex-col">
           <span className="text-[11px] font-bold text-text-muted uppercase tracking-wider mb-1">Hora Pico de Consumo</span>
           <div className="flex items-baseline gap-2">
-            <span className="text-xl font-bold text-text-primary">19:30 - 21:00</span>
+            <span className="text-xl font-bold text-text-primary">{summary.peak_time}</span>
           </div>
-          <span className="text-xs text-text-muted mt-0.5">Uso nocturno</span>
+          <span className="text-xs text-text-muted mt-0.5">({summary.peak_power_w} W)</span>
         </div>
 
         <div className="flex flex-col">
           <span className="text-[11px] font-bold text-text-muted uppercase tracking-wider mb-1">Ahorros Estimados</span>
           <div className="flex items-baseline gap-2">
-            <span className="text-xl font-bold text-text-primary">$42,500 COP</span>
+            <span className="text-xl font-bold text-text-primary">${summary.month_savings_cop.toLocaleString('es-CO')} COP</span>
           </div>
           <span className="text-xs text-success-text font-medium mt-0.5">En camino a incrementar</span>
         </div>

@@ -4,8 +4,12 @@ import StatCards from '@/src/components/dashboard/StatCards';
 import EnergyChart from '@/src/components/charts/EnergyChart';
 import ApplianceTable from '@/src/components/dashboard/ApplianceTable';
 import InsightsPanel from '@/src/components/dashboard/InsightsPanel';
+import { getHourlyData, getSummary } from '@/src/lib/api';
 
-export default function Home() {
+export default async function Home() {
+  const hourlyData = await getHourlyData();
+  const summary = await getSummary();
+
   return (
     <div className="min-h-screen flex flex-col w-full">
       <Header />
@@ -14,8 +18,8 @@ export default function Home() {
           <Sidebar />
           
           <main className="flex flex-col gap-6 w-full min-w-0">
-            <StatCards />
-            <EnergyChart />
+            <StatCards summary={summary} />
+            <EnergyChart data={hourlyData} />
             <ApplianceTable />
           </main>
           

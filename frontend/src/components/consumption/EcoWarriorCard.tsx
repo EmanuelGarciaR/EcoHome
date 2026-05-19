@@ -8,7 +8,7 @@ export default function EcoWarriorCard() {
         <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mb-3 shadow-sm">
           <Zap size={24} className="text-brand" fill="currentColor" />
         </div>
-        <h2 className="text-[18px] font-bold text-[#064E3B] mb-2">Eco-Warrior Status</h2>
+        <h2 className="text-[18px] font-bold text-[#064E3B] mb-2">Estado de Eco-Guerrero</h2>
         <p className="text-[13px] text-[#064E3B] font-medium leading-relaxed opacity-90 mb-5 px-2">
           ¡Estás en el top 15% de hogares con mayor eficiencia energética en tu vecindario este mes!
         </p>

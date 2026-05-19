@@ -9,7 +9,7 @@ export default function Header() {
       <div className="flex items-center gap-3">
         <Image src="/eco_home_logo.png" alt="EcoHome Logo" width={32} height={32} className="rounded-md" />
         <h1 className="text-[20px] font-semibold text-text-primary">
-          EcoHome Dashboard
+          Panel de EcoHome
         </h1>
       </div>
 
@@ -18,16 +18,16 @@ export default function Header() {
         {/* 1. Badge Live Tracking */}
         <div className="flex items-center bg-success-bg text-success-text px-3 py-1.5 rounded-full text-[12px] font-medium">
           <span className="w-2 h-2 bg-success-text rounded-full animate-pulse mr-2"></span>
-          Live Tracking
+          Seguimiento en Vivo
         </div>
 
         {/* 2. Toggle Hourly / Daily */}
         <div className="flex items-center bg-app-bg rounded-full p-1 border border-border-subtle">
           <button className="px-3 py-1 text-sm bg-app-card rounded-full shadow-sm text-text-primary font-medium transition-colors">
-            Hourly
+            Por Hora
           </button>
           <button className="px-3 py-1 text-sm text-text-muted hover:text-text-primary transition-colors">
-            Daily
+            Diario
           </button>
         </div>
 

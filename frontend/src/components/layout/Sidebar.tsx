@@ -28,7 +28,7 @@ export default function Sidebar() {
           </div>
           <div>
             <div className="font-bold text-text-primary text-sm">Julian R.</div>
-            <div className="text-text-muted text-xs">Eco Enthusiast</div>
+            <div className="text-text-muted text-xs">Entusiasta Ecológico</div>
           </div>
         </div>
 
@@ -59,13 +59,13 @@ export default function Sidebar() {
       {/* <article aria-label="Eco Status" className="bg-success-bg rounded-2xl p-4 border border-border-subtle mt-4">
         <div className="flex items-center gap-2 mb-2">
           <Leaf size={16} className="text-brand" />
-          <span className="font-semibold text-text-primary text-sm">Eco Status</span>
+          <span className="font-semibold text-text-primary text-sm">Estado Ecológico</span>
         </div>
         <p className="text-xs text-brand mb-3 leading-tight font-medium">
-          You are in the top 5% of energy savers in Bogotá this month!
+          ¡Estás en el 5% superior de ahorradores de energía en Bogotá este mes!
         </p>
         <button className="w-full bg-app-card border border-brand text-brand text-xs font-semibold py-2 rounded-xl shadow-sm hover:bg-brand hover:text-white transition-colors">
-          View Achievement
+          Ver Logro
         </button>
       </article> */}
     </aside>
