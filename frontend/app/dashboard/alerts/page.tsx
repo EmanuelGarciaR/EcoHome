@@ -6,6 +6,7 @@ import Sidebar from '@/src/components/layout/Sidebar';
 import AlertCard from '@/src/components/alerts/AlertCard';
 import AchievementCard from '@/src/components/alerts/AchievementCard';
 import MilestoneProgress from '@/src/components/alerts/MilestoneProgress';
+import AlertHistoryDrawer from '@/src/components/alerts/AlertHistoryDrawer';
 import { Alert, mockAlertKpis, mockAlerts, mockOlderAlerts, mockAchievements, mockNextMilestone } from '@/src/lib/mockData';
 import { Bell, Leaf, Zap, Calendar, X, Loader2 } from 'lucide-react';
 
@@ -16,6 +17,29 @@ export default function AlertsPage() {
   const [visibleAlerts, setVisibleAlerts] = useState<Alert[]>(mockAlerts);
   const [isLoadingOlder, setIsLoadingOlder] = useState(false);
   const [hasLoadedOlder, setHasLoadedOlder] = useState(false);
+  
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [highlightedAlertId, setHighlightedAlertId] = useState<string | null>(null);
+
+  const handleSelectFromHistory = (id: string) => {
+    setIsDrawerOpen(false);
+    
+    // Ensure alert is visible if it's from older alerts
+    if (!visibleAlerts.find(a => a.id === id)) {
+      setVisibleAlerts(prev => [...prev, ...mockOlderAlerts]);
+      setHasLoadedOlder(true);
+    }
+    
+    setHighlightedAlertId(id);
+    setTimeout(() => {
+      setHighlightedAlertId(null);
+    }, 800);
+
+    const alert = [...mockAlerts, ...mockOlderAlerts].find(a => a.id === id);
+    if (alert) {
+      setSelectedAlert(alert);
+    }
+  };
 
   const handleLoadOlder = () => {
     setIsLoadingOlder(true);
@@ -72,9 +96,9 @@ export default function AlertsPage() {
                     <h2 className="text-[18px] font-bold text-text-primary">Alertas Inteligentes</h2>
                     <span className="bg-success-bg text-brand text-[10px] font-bold px-2 py-0.5 rounded-full">Nuevo</span>
                   </div>
-                  <a href="#" className="text-[13px] font-semibold text-text-muted hover:text-text-primary transition-colors">
+                  <button onClick={() => setIsDrawerOpen(true)} className="text-[13px] font-semibold text-text-muted hover:text-text-primary transition-colors">
                     Ver Historial Completo
-                  </a>
+                  </button>
                 </header>
 
                 <div className="flex flex-col gap-4">
@@ -83,6 +107,7 @@ export default function AlertsPage() {
                       key={alert.id} 
                       alert={alert} 
                       isRead={readIds.has(alert.id)} 
+                      isHighlighted={highlightedAlertId === alert.id}
                       onMarkRead={() => handleMarkRead(alert.id)} 
                       onViewDetails={() => setSelectedAlert(alert)}
                     />
@@ -161,6 +186,14 @@ export default function AlertsPage() {
           </div>
         </div>
       )}
+
+      {/* History Drawer */}
+      <AlertHistoryDrawer 
+        isOpen={isDrawerOpen} 
+        onClose={() => setIsDrawerOpen(false)} 
+        alerts={[...mockAlerts, ...mockOlderAlerts]}
+        onSelectAlert={handleSelectFromHistory}
+      />
     </div>
   );
 }

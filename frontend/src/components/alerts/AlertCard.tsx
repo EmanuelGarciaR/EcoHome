@@ -5,11 +5,12 @@ import { TrendingDown, AlertCircle, Leaf, Calendar, Award, Check, CheckCheck } f
 interface AlertCardProps {
   alert: Alert;
   isRead?: boolean;
+  isHighlighted?: boolean;
   onMarkRead?: () => void;
   onViewDetails?: () => void;
 }
 
-export default function AlertCard({ alert, isRead = false, onMarkRead, onViewDetails }: AlertCardProps) {
+export default function AlertCard({ alert, isRead = false, isHighlighted = false, onMarkRead, onViewDetails }: AlertCardProps) {
   const getTypeStyles = (type: string) => {
     switch (type) {
       case 'savings': return { border: 'border-l-[#1D9E75]', badgeBg: 'bg-[#D1FAE5]', badgeText: 'text-[#065F46]' };
@@ -47,7 +48,7 @@ export default function AlertCard({ alert, isRead = false, onMarkRead, onViewDet
   const showNew = alert.isNew && !isRead;
 
   return (
-    <article className={`bg-app-card border border-border-light rounded-[12px] p-5 flex gap-4 ${styles.border} border-l-[4px] shadow-sm relative transition-opacity duration-300 ${isRead ? 'opacity-60' : 'opacity-100'}`}>
+    <article className={`border border-border-light rounded-[12px] p-5 flex gap-4 ${styles.border} border-l-[4px] shadow-sm relative transition-all duration-500 ${isHighlighted ? 'bg-yellow-50' : 'bg-app-card'} ${isRead ? 'opacity-60' : 'opacity-100'}`}>
       
       {/* Icon */}
       <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${getIconBg(alert.type)}`}>
