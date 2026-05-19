@@ -20,7 +20,7 @@ export default function ConsumptionPage() {
       <Header />
       <div className="max-w-[1440px] mx-auto px-6 py-6">
         {/* Same base layout structure */}
-        <div className="grid grid-cols-[240px_1fr_300px] gap-6 items-start">
+        <div className="grid grid-cols-[240px_1fr_auto] gap-6 items-start">
           <Sidebar />
           
           <main className="flex flex-col w-full h-full overflow-hidden">

@@ -10,7 +10,7 @@ export default function Home() {
     <div className="min-h-screen flex flex-col w-full">
       <Header />
       <div className="w-full px-6 py-6 flex-grow">
-        <div className="max-w-[1440px] mx-auto w-full grid grid-cols-[240px_1fr_300px] gap-6 items-start">
+        <div className="max-w-[1440px] mx-auto w-full grid grid-cols-[240px_1fr_auto] gap-6 items-start">
           <Sidebar />
           
           <main className="flex flex-col gap-6 w-full min-w-0">

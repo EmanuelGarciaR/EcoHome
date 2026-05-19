@@ -1,44 +1,97 @@
-import React from 'react';
-import { Calendar, Leaf, Clock, ArrowUpRight, Zap } from 'lucide-react';
+'use client';
+
+import React, { useState } from 'react';
+import { Calendar, Leaf, Clock, ArrowUpRight, Zap, ChevronRight, ChevronLeft } from 'lucide-react';
 
 export default function InsightsPanel() {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  if (isCollapsed) {
+    return (
+      <aside className="w-[60px] flex flex-col gap-6 items-center transition-all duration-300 pt-1">
+        <button 
+          onClick={() => setIsCollapsed(false)}
+          className="p-2 bg-app-card border border-border-light rounded-full hover:bg-app-bg transition-colors shadow-sm"
+          title="Desplegar consejos"
+        >
+          <ChevronLeft size={20} className="text-text-secondary hover:text-text-primary" />
+        </button>
+        
+        <div className="flex flex-col gap-4 w-full px-2">
+          <div 
+            className="w-11 h-11 mx-auto rounded-xl bg-violet-100 border-l-[3px] border-violet-500 text-violet-900 flex items-center justify-center cursor-pointer hover:shadow-md transition-all shadow-sm" 
+            title="¡Ahorros de Suscripción!" 
+            onClick={() => setIsCollapsed(false)}
+          >
+            <Calendar size={20} />
+          </div>
+          <div 
+            className="w-11 h-11 mx-auto rounded-xl bg-emerald-100 border-l-[3px] border-emerald-500 text-emerald-900 flex items-center justify-center cursor-pointer hover:shadow-md transition-all shadow-sm" 
+            title="Protector del Planeta" 
+            onClick={() => setIsCollapsed(false)}
+          >
+            <Leaf size={20} />
+          </div>
+          <div 
+            className="w-11 h-11 mx-auto rounded-xl bg-amber-100 border-l-[3px] border-amber-500 text-amber-900 flex items-center justify-center cursor-pointer hover:shadow-md transition-all shadow-sm" 
+            title="Oportunidad Valle" 
+            onClick={() => setIsCollapsed(false)}
+          >
+            <Clock size={20} />
+          </div>
+        </div>
+      </aside>
+    );
+  }
+
   return (
-    <aside className="w-[300px] flex flex-col gap-4">
+    <aside className="w-[300px] flex flex-col gap-4 transition-all duration-300">
       {/* Header */}
       <header className="flex justify-between items-center mb-1">
-        <h2 className="text-[16px] font-bold text-text-primary">Consejos Inteligentes</h2>
-        <span className="text-xs font-bold text-text-primary">3 Nuevos</span>
+        <div className="flex items-center gap-2">
+          <h2 className="text-[16px] font-bold text-text-primary">Consejos Inteligentes</h2>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-bold text-text-primary bg-app-card px-2 py-1 rounded-md">3 Nuevos</span>
+          <button 
+            onClick={() => setIsCollapsed(true)}
+            className="p-1.5 text-text-secondary hover:text-text-primary hover:bg-app-card rounded-md transition-colors"
+            title="Contraer consejos"
+          >
+            <ChevronRight size={18} />
+          </button>
+        </div>
       </header>
 
-      {/* Insight 1: Teal */}
-      <article className="bg-success-bg border-l-[3px] border-brand p-4 rounded-2xl flex flex-col gap-2">
-        <div className="flex items-center gap-2 text-green-800 font-semibold text-sm">
-          <Calendar size={16} />
+      {/* Insight 1: Violet */}
+      <article className="bg-violet-100 border-l-[3px] border-violet-500 p-4 rounded-2xl flex flex-col gap-2 shadow-sm transition-transform hover:-translate-y-1">
+        <div className="flex items-center gap-2 text-violet-900 font-bold text-sm">
+          <Calendar size={18} />
           ¡Ahorros de Suscripción!
         </div>
-        <p className="text-xs text-green-800 opacity-80 leading-relaxed">
+        <p className="text-xs text-violet-900 opacity-90 leading-relaxed font-medium">
           Ahorraste $30,000 COP este mes optimizando el aire acondicionado — ¡suficiente para pagar tu membresía de Netflix!
         </p>
       </article>
 
-      {/* Insight 2: Green */}
-      <article className="bg-green-50 border-l-[3px] border-green-400 p-4 rounded-2xl flex flex-col gap-2">
-        <div className="flex items-center gap-2 text-green-800 font-semibold text-sm">
-          <Leaf size={16} />
+      {/* Insight 2: Emerald */}
+      <article className="bg-emerald-100 border-l-[3px] border-emerald-500 p-4 rounded-2xl flex flex-col gap-2 shadow-sm transition-transform hover:-translate-y-1">
+        <div className="flex items-center gap-2 text-emerald-900 font-bold text-sm">
+          <Leaf size={18} />
           Protector del Planeta
         </div>
-        <p className="text-xs text-green-800 opacity-80 leading-relaxed">
+        <p className="text-xs text-emerald-900 opacity-90 leading-relaxed font-medium">
           ¡Genial! Tu reducción de huella de carbono este mes equivale a salvar 4 árboles en el Amazonas 🌲
         </p>
       </article>
 
-      {/* Insight 3: Blue */}
-      <article className="bg-blue-50 border-l-[3px] border-blue-400 p-4 rounded-2xl flex flex-col gap-2">
-        <div className="flex items-center gap-2 text-blue-800 font-semibold text-sm">
-          <Clock size={16} />
+      {/* Insight 3: Amber */}
+      <article className="bg-amber-100 border-l-[3px] border-amber-500 p-4 rounded-2xl flex flex-col gap-2 shadow-sm transition-transform hover:-translate-y-1">
+        <div className="flex items-center gap-2 text-amber-900 font-bold text-sm">
+          <Clock size={18} />
           Oportunidad Valle
         </div>
-        <p className="text-xs text-blue-800 opacity-80 leading-relaxed">
+        <p className="text-xs text-amber-900 opacity-90 leading-relaxed font-medium">
           Si lavas la ropa entre 10 PM y 6 AM podrías ahorrar para comprarte 4 Chocorramos el próximo mes. 🍫
         </p>
       </article>
