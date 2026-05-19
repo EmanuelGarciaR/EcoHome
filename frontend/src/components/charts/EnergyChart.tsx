@@ -1,14 +1,27 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { TimeSeriesPoint } from '@/src/lib/mockData';
+import { getHourlyData, getDailyData } from '@/src/lib/api';
 
 interface EnergyChartProps {
-  data: TimeSeriesPoint[];
+  mode: "hourly" | "daily";
+  onModeChange: (mode: "hourly" | "daily") => void;
 }
 
-export default function EnergyChart({ data }: EnergyChartProps) {
+export default function EnergyChart({ mode, onModeChange }: EnergyChartProps) {
+  const [data, setData] = useState<TimeSeriesPoint[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const newData = mode === "hourly"
+        ? await getHourlyData()
+        : await getDailyData();
+      setData(newData);
+    };
+    fetchData();
+  }, [mode]);
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
@@ -31,10 +44,24 @@ export default function EnergyChart({ data }: EnergyChartProps) {
           <p className="text-[13px] text-text-muted mt-1">Monitoreo en vivo</p>
         </div>
         
-        {/* Toggle Hourly / Daily (from mockup) */}
-        <div className="flex items-center text-xs font-semibold text-text-muted gap-4">
-          <span className="text-text-primary">Por Hora</span>
-          <span className="hover:text-text-primary cursor-pointer transition-colors">Diario</span>
+        {/* Toggle Hourly / Daily */}
+        <div className="flex items-center bg-[#F3F4F6] rounded-full p-1 border border-border-subtle">
+          <button 
+            onClick={() => onModeChange('hourly')}
+            className={`px-3 py-1 text-sm rounded-full font-medium transition-colors ${
+              mode === 'hourly' ? 'bg-[#1D9E75] text-white shadow-sm' : 'text-[#6B7280]'
+            }`}
+          >
+            Por Hora
+          </button>
+          <button 
+            onClick={() => onModeChange('daily')}
+            className={`px-3 py-1 text-sm rounded-full font-medium transition-colors ${
+              mode === 'daily' ? 'bg-[#1D9E75] text-white shadow-sm' : 'text-[#6B7280]'
+            }`}
+          >
+            Diario
+          </button>
         </div>
       </header>
 

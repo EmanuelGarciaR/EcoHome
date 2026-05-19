@@ -21,15 +21,7 @@ export default function Header() {
           Seguimiento en Vivo
         </div>
 
-        {/* 2. Toggle Hourly / Daily */}
-        <div className="flex items-center bg-app-bg rounded-full p-1 border border-border-subtle">
-          <button className="px-3 py-1 text-sm bg-app-card rounded-full shadow-sm text-text-primary font-medium transition-colors">
-            Por Hora
-          </button>
-          <button className="px-3 py-1 text-sm text-text-muted hover:text-text-primary transition-colors">
-            Diario
-          </button>
-        </div>
+
 
         {/* 3. Icons */}
         <div className="flex items-center gap-3 ml-2 border-l border-border-light pl-4">

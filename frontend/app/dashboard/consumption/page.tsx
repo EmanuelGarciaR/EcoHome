@@ -8,7 +8,7 @@ import InsightsPanel from '@/src/components/dashboard/InsightsPanel';
 import ViewRangeFilter from '@/src/components/consumption/ViewRangeFilter';
 import ConsumptionKPIs from '@/src/components/consumption/ConsumptionKPIs';
 import ConsumptionTrendsChart from '@/src/components/consumption/ConsumptionTrendsChart';
-import UsageByCategory from '@/src/components/consumption/UsageByCategory';
+
 import { getRangeData, getSummary } from '@/src/lib/api';
 import { RangePoint, StatsSummary } from '@/src/lib/mockData';
 
@@ -39,27 +39,20 @@ export default function ConsumptionPage() {
           <Sidebar />
           
           <main className="flex flex-col w-full h-full overflow-hidden">
-            <h2 className="text-[20px] font-semibold text-text-primary mb-4">
-              Historial de Consumo
-            </h2>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-[20px] font-semibold text-text-primary">
+                Historial de Consumo
+              </h2>
+              <ViewRangeFilter timeRange={timeRange} onChange={setTimeRange} />
+            </div>
 
-            <div className="flex gap-6 items-start w-full">
-              <div className="flex-shrink-0">
-                <ViewRangeFilter timeRange={timeRange} onChange={setTimeRange} />
-              </div>
-
-              <div className="flex-1 flex flex-col gap-8 min-w-0">
-                {summary && <ConsumptionKPIs summary={summary} />}
-                
-                <div className="mt-2">
-                  {summary && rangeData.length > 0 && (
-                    <ConsumptionTrendsChart timeRange={timeRange} data={rangeData} summary={summary} />
-                  )}
-                </div>
-                
-                <div className="w-full max-w-[500px]">
-                  <UsageByCategory />
-                </div>
+            <div className="flex flex-col gap-8 w-full">
+              {summary && <ConsumptionKPIs summary={summary} />}
+              
+              <div className="mt-2 w-full">
+                {summary && rangeData.length > 0 && (
+                  <ConsumptionTrendsChart timeRange={timeRange} data={rangeData} summary={summary} />
+                )}
               </div>
             </div>
           </main>

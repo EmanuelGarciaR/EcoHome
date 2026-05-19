@@ -1,14 +1,26 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import Header from '@/src/components/layout/Header';
 import Sidebar from '@/src/components/layout/Sidebar';
 import StatCards from '@/src/components/dashboard/StatCards';
 import EnergyChart from '@/src/components/charts/EnergyChart';
 import ApplianceTable from '@/src/components/dashboard/ApplianceTable';
 import InsightsPanel from '@/src/components/dashboard/InsightsPanel';
-import { getHourlyData, getSummary } from '@/src/lib/api';
+import { getSummary } from '@/src/lib/api';
+import { StatsSummary } from '@/src/lib/mockData';
 
-export default async function Home() {
-  const hourlyData = await getHourlyData();
-  const summary = await getSummary();
+export default function Home() {
+  const [chartMode, setChartMode] = useState<"hourly" | "daily">("hourly");
+  const [summary, setSummary] = useState<StatsSummary | null>(null);
+
+  useEffect(() => {
+    getSummary().then(setSummary);
+  }, []);
+
+  if (!summary) {
+    return <div className="min-h-screen flex items-center justify-center">Cargando...</div>;
+  }
 
   return (
     <div className="min-h-screen flex flex-col w-full">
@@ -19,7 +31,7 @@ export default async function Home() {
           
           <main className="flex flex-col gap-6 w-full min-w-0">
             <StatCards summary={summary} />
-            <EnergyChart data={hourlyData} />
+            <EnergyChart mode={chartMode} onModeChange={setChartMode} />
             <ApplianceTable />
           </main>
           
