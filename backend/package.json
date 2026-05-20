@@ -1,20 +1,45 @@
 {
-  "name": "backend",
+  "name": "ecohome-backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "EcoHome Express.js backend with Better Auth, Drizzle ORM, and Supabase",
+  "main": "dist/index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "auth:generate": "pnpm dlx auth@latest generate"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "better-auth": "^1.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "^0.44.0",
+    "express": "^4.21.2",
+    "postgres": "^3.4.5",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/express-serve-static-core": "^5.1.1",
+    "@types/node": "^22.10.0",
+    "drizzle-kit": "^0.31.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  },
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
       "version": "^11.1.2",
       "onFail": "download"
     }
-  },
-  "type": "module"
+  }
 }
