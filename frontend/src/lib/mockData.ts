@@ -313,6 +313,41 @@ export interface MonthlyReport {
   dataCompleteness: number;
   aiSummary: string;
   aiRecommendations: AIRecommendation[];
+  peakPowerW: number;
+  peakTime: string;
+  avgDailyKwh: number;
+  powerFactor: number;
+  monthlyTrend: Array<{
+    month: string;
+    kwh: number;
+  }>;
+}
+
+// ────────────────────────────────────────────────────────────────────
+// Función de cálculo de fun facts — ÚNICA fuente de verdad.
+// Recibe el ahorro mensual en COP y devuelve las equivalencias.
+// Cuando lleguen datos reales del backend sólo hay que llamar a esta
+// función con el campo savingsCop que retorne la API.
+// ────────────────────────────────────────────────────────────────────
+export const METRO_TICKET_COP = 3820;   // Precio pasaje Metro de Medellín
+export const NETFLIX_COP     = 17900;  // Plan básico Netflix Colombia
+export const CHOCORAMO_COP   = 1200;   // Precio unitario Chocoramo
+export const COFFEE_COP      = 3000;   // Café artesanal promedio
+
+export interface FunFacts {
+  chocoramos: number;
+  netflixMonths: number;
+  coffeeCups: number;
+  metroTrips: number;
+}
+
+export function calcFunFacts(savingsCop: number): FunFacts {
+  return {
+    chocoramos:    Math.floor(savingsCop / CHOCORAMO_COP),
+    netflixMonths: parseFloat((savingsCop / NETFLIX_COP).toFixed(1)),
+    coffeeCups:    Math.floor(savingsCop / COFFEE_COP),
+    metroTrips:    Math.floor(savingsCop / METRO_TICKET_COP),
+  };
 }
 
 export const mockReports: MonthlyReport[] = [
@@ -327,6 +362,19 @@ export const mockReports: MonthlyReport[] = [
     co2OffsetKg: 108.85,
     dataCompleteness: 100,
     aiSummary: 'Tu mes más eficiente este año. Has reducido las emisiones de carbono en un 18% comparado con el periodo anterior.',
+    peakPowerW: 3200,
+    peakTime: '19:45',
+    avgDailyKwh: 11.0,
+    powerFactor: 0.92,
+    monthlyTrend: [
+      { month: 'Mar', kwh: 410 },
+      { month: 'Abr', kwh: 395 },
+      { month: 'May', kwh: 356 },
+      { month: 'Jun', kwh: 412 },
+      { month: 'Jul', kwh: 388 },
+      { month: 'Ago', kwh: 342 },
+    ],
+
     aiRecommendations: [
       {
         title: 'Optimiza el aire acondicionado',
@@ -353,6 +401,19 @@ export const mockReports: MonthlyReport[] = [
     co2OffsetKg: 65.31,
     dataCompleteness: 100,
     aiSummary: 'Buen mes con mejoras constantes. El consumo nocturno disminuyó significativamente.',
+    peakPowerW: 3400,
+    peakTime: '20:15',
+    avgDailyKwh: 12.5,
+    powerFactor: 0.90,
+    monthlyTrend: [
+      { month: 'Feb', kwh: 390 },
+      { month: 'Mar', kwh: 410 },
+      { month: 'Abr', kwh: 395 },
+      { month: 'May', kwh: 356 },
+      { month: 'Jun', kwh: 412 },
+      { month: 'Jul', kwh: 388 },
+    ],
+
     aiRecommendations: [
       {
         title: 'Desconecta los dispositivos en standby',
@@ -373,6 +434,19 @@ export const mockReports: MonthlyReport[] = [
     co2OffsetKg: 21.77,
     dataCompleteness: 100,
     aiSummary: 'Mes con consumo elevado debido a las altas temperaturas. Se recomienda optimizar la climatización.',
+    peakPowerW: 3800,
+    peakTime: '14:30',
+    avgDailyKwh: 13.7,
+    powerFactor: 0.88,
+    monthlyTrend: [
+      { month: 'Ene', kwh: 420 },
+      { month: 'Feb', kwh: 390 },
+      { month: 'Mar', kwh: 410 },
+      { month: 'Abr', kwh: 395 },
+      { month: 'May', kwh: 356 },
+      { month: 'Jun', kwh: 412 },
+    ],
+
     aiRecommendations: [
       {
         title: 'Usa ventiladores de techo',
@@ -393,6 +467,19 @@ export const mockReports: MonthlyReport[] = [
     co2OffsetKg: 87.08,
     dataCompleteness: 100,
     aiSummary: 'Excelente mes de ahorro. Tus hábitos de uso durante horas valle están dando resultados.',
+    peakPowerW: 3100,
+    peakTime: '07:00',
+    avgDailyKwh: 11.4,
+    powerFactor: 0.94,
+    monthlyTrend: [
+      { month: 'Dic', kwh: 460 },
+      { month: 'Ene', kwh: 420 },
+      { month: 'Feb', kwh: 390 },
+      { month: 'Mar', kwh: 410 },
+      { month: 'Abr', kwh: 395 },
+      { month: 'May', kwh: 356 },
+    ],
+
     aiRecommendations: [
       {
         title: 'Programa la lavadora en horario valle',
@@ -413,6 +500,19 @@ export const mockReports: MonthlyReport[] = [
     co2OffsetKg: 43.54,
     dataCompleteness: 100,
     aiSummary: 'Mes estable con oportunidades de mejora en el uso del calentador de agua.',
+    peakPowerW: 3500,
+    peakTime: '19:00',
+    avgDailyKwh: 13.1,
+    powerFactor: 0.91,
+    monthlyTrend: [
+      { month: 'Nov', kwh: 410 },
+      { month: 'Dic', kwh: 460 },
+      { month: 'Ene', kwh: 420 },
+      { month: 'Feb', kwh: 390 },
+      { month: 'Mar', kwh: 410 },
+      { month: 'Abr', kwh: 395 },
+    ],
+
     aiRecommendations: [
       {
         title: 'Reduce el tiempo de ducha',

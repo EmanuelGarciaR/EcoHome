@@ -1,14 +1,28 @@
 'use client';
 
-import React from 'react';
-import { Download, Share2, Zap, CreditCard, TreePine, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { Download, Share2, Zap, CreditCard, TreePine, ShieldCheck, CheckCircle2, Eye } from 'lucide-react';
 import { MonthlyReport } from '@/src/lib/mockData';
+import dynamic from 'next/dynamic';
+import ReportPDF from './ReportPDF';
+import ReportViewModal from './ReportViewModal';
+
+const PDFDownloadLink = dynamic(
+  () => import('@react-pdf/renderer').then(m => m.PDFDownloadLink),
+  { ssr: false, loading: () => (
+    <button className="btn-primary gap-2 rounded-full px-5 py-2.5 text-sm opacity-60 cursor-not-allowed">
+      <Download size={16} /> Preparando...
+    </button>
+  )}
+);
 
 interface ReportHeroProps {
   report: MonthlyReport;
 }
 
 export default function ReportHero({ report }: ReportHeroProps) {
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <section aria-label="Latest Report Overview" className="grid grid-cols-[1fr_auto] gap-4">
       {/* ── Left: Main Report Card ──────────────────────────────── */}
@@ -36,11 +50,25 @@ export default function ReportHero({ report }: ReportHeroProps) {
 
         {/* Actions */}
         <div className="flex items-center gap-3">
-          <button className="btn-primary gap-2 rounded-full px-5 py-2.5 text-sm shadow-md shadow-brand/20 hover:shadow-lg hover:shadow-brand/30 transition-all">
-            <Download size={16} />
-            Descargar PDF
+          <PDFDownloadLink
+            document={<ReportPDF report={report} />}
+            fileName={`EcoHome-${report.period.replace(' ', '-')}.pdf`}
+          >
+            {({ loading }) => (
+              <button className="btn-primary gap-2 rounded-full px-5 py-2.5 text-sm shadow-md shadow-brand/20 hover:shadow-lg hover:shadow-brand/30 transition-all cursor-pointer">
+                <Download size={16} />
+                {loading ? 'Generando PDF...' : 'Descargar PDF'}
+              </button>
+            )}
+          </PDFDownloadLink>
+          <button
+            onClick={() => setShowModal(true)}
+            className="btn-secondary gap-2 rounded-full px-5 py-2.5 text-sm cursor-pointer"
+          >
+            <Eye size={16} />
+            Ver Reporte
           </button>
-          <button className="btn-secondary gap-2 rounded-full px-5 py-2.5 text-sm">
+          <button className="btn-secondary gap-2 rounded-full px-5 py-2.5 text-sm cursor-pointer">
             <Share2 size={16} />
             Compartir
           </button>
@@ -107,6 +135,13 @@ export default function ReportHero({ report }: ReportHeroProps) {
           </div>
         </div>
       </div>
+
+      {showModal && (
+        <ReportViewModal
+          report={report}
+          onClose={() => setShowModal(false)}
+        />
+      )}
     </section>
   );
 }

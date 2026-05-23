@@ -3,6 +3,14 @@
 import React, { useState, useMemo } from 'react';
 import { FileText, Eye, Download, MoreVertical, TreePine, ChevronRight } from 'lucide-react';
 import { MonthlyReport } from '@/src/lib/mockData';
+import dynamic from 'next/dynamic';
+import ReportPDF from './ReportPDF';
+import ReportViewModal from './ReportViewModal';
+
+const PDFDownloadLink = dynamic(
+  () => import('@react-pdf/renderer').then(m => m.PDFDownloadLink),
+  { ssr: false }
+);
 
 interface ReportsArchiveProps {
   reports: MonthlyReport[];
@@ -12,6 +20,7 @@ type YearFilter = 'all' | '2023' | '2022';
 
 export default function ReportsArchive({ reports }: ReportsArchiveProps) {
   const [yearFilter, setYearFilter] = useState<YearFilter>('all');
+  const [selectedReport, setSelectedReport] = useState<MonthlyReport | null>(null);
 
   const filteredReports = useMemo(() => {
     if (yearFilter === 'all') return reports;
@@ -137,17 +146,26 @@ export default function ReportsArchive({ reports }: ReportsArchiveProps) {
                   <td className="px-5 py-4">
                     <div className="flex items-center justify-end gap-2">
                       <button
-                        className="p-2 rounded-lg text-text-muted hover:text-text-primary hover:bg-app-bg transition-colors"
+                        onClick={() => setSelectedReport(report)}
+                        className="p-2 rounded-lg text-text-muted hover:text-text-primary hover:bg-app-bg transition-colors cursor-pointer"
                         title="Ver reporte"
                       >
                         <Eye size={16} />
                       </button>
-                      <button
-                        className="p-2 rounded-lg text-text-muted hover:text-text-primary hover:bg-app-bg transition-colors"
-                        title="Descargar"
+                      <PDFDownloadLink
+                        document={<ReportPDF report={report} />}
+                        fileName={`EcoHome-${report.period.replace(' ', '-')}.pdf`}
                       >
-                        <Download size={16} />
-                      </button>
+                        {({ loading }) => (
+                          <button
+                            className="p-2 rounded-lg text-text-muted hover:text-text-primary hover:bg-app-bg transition-colors cursor-pointer"
+                            title={loading ? 'Generando...' : 'Descargar'}
+                            disabled={loading}
+                          >
+                            <Download size={16} />
+                          </button>
+                        )}
+                      </PDFDownloadLink>
                       <button
                         className="p-2 rounded-lg text-text-muted hover:text-text-primary hover:bg-app-bg transition-colors"
                         title="Más opciones"
@@ -164,12 +182,19 @@ export default function ReportsArchive({ reports }: ReportsArchiveProps) {
 
         {/* View Full History Link */}
         <div className="flex justify-center py-4 border-t border-border-subtle">
-          <button className="flex items-center gap-1 text-brand text-[14px] font-semibold hover:underline transition-all group">
+          <button className="flex items-center gap-1 text-brand text-[14px] font-semibold hover:underline transition-all group cursor-pointer">
             Ver Historial Completo
             <ChevronRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
           </button>
         </div>
       </div>
+
+      {selectedReport && (
+        <ReportViewModal
+          report={selectedReport}
+          onClose={() => setSelectedReport(null)}
+        />
+      )}
     </section>
   );
 }
