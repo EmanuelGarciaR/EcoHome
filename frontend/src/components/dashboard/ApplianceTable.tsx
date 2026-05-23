@@ -28,7 +28,7 @@ export default function ApplianceTable() {
   };
 
   return (
-    <section aria-labelledby="appliance-table-title" className="card">
+    <section aria-labelledby="appliance-table-title" className="card mt-2">
       <header className="flex justify-between items-center mb-6">
         <h2 id="appliance-table-title" className="text-[16px] font-bold text-text-primary">Distribución por Electrodoméstico</h2>
         <a href="#" className="text-brand font-semibold text-sm hover:underline">Ver Todos los Detalles</a>

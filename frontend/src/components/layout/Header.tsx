@@ -7,7 +7,7 @@ export default function Header() {
     <header className="h-[64px] bg-app-card border-b border-border-light px-6 flex items-center justify-between w-full">
       {/* Left */}
       <div className="flex items-center gap-3">
-        <Image src="/eco_home_logo.png" alt="EcoHome Logo" width={32} height={32} className="rounded-md" />
+        <Image src="/icono_ecohome.png" alt="EcoHome Logo" width={32} height={32} className="rounded-md" />
         <h1 className="text-[20px] font-semibold text-text-primary">
           Panel de EcoHome
         </h1>

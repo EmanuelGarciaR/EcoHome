@@ -65,9 +65,9 @@ export default function EnergyChart({ mode, onModeChange }: EnergyChartProps) {
         </div>
       </header>
 
-      <div className="flex-grow w-full h-full -ml-4 mt-2 min-h-[250px]" style={{ minWidth: '100%', minHeight: '100%' }}>
-        <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
-          <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+      <div className="flex-1 w-full -ml-4 min-h-0">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 24 }}>
             <defs>
               <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="var(--color-brand)" stopOpacity={0.15}/>
@@ -81,6 +81,7 @@ export default function EnergyChart({ mode, onModeChange }: EnergyChartProps) {
               tickLine={false} 
               tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }}
               dy={10}
+              padding={{ left: 16, right: 16 }}
             />
             <YAxis 
               axisLine={false} 
@@ -88,6 +89,7 @@ export default function EnergyChart({ mode, onModeChange }: EnergyChartProps) {
               tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }}
               domain={[0, 8]}
               ticks={[0, 2, 4, 6, 8]}
+              width={25}
             />
             <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'var(--color-border-subtle)', strokeWidth: 2, strokeDasharray: '4 4' }} />
             <Area 
