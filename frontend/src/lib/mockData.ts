@@ -289,3 +289,137 @@ export const mockOlderAlerts: Alert[] = [
     highlightType: 'milestone'
   }
 ];
+
+// ════════════════════════════════════════════════════════════════════
+//  Reports
+// ════════════════════════════════════════════════════════════════════
+
+export interface AIRecommendation {
+  title: string;
+  description: string;
+  estimatedSavings: string;
+  impact: 'high' | 'medium' | 'low';
+}
+
+export interface MonthlyReport {
+  id: string;
+  period: string;
+  periodDate: string;
+  status: 'pending' | 'complete' | 'failed';
+  consumptionKwh: number;
+  savingsCop: number;
+  treesSaved: number;
+  co2OffsetKg: number;
+  dataCompleteness: number;
+  aiSummary: string;
+  aiRecommendations: AIRecommendation[];
+}
+
+export const mockReports: MonthlyReport[] = [
+  {
+    id: 'r1',
+    period: 'Agosto 2023',
+    periodDate: '2023-08-01',
+    status: 'complete',
+    consumptionKwh: 342,
+    savingsCop: 42500,
+    treesSaved: 5,
+    co2OffsetKg: 108.85,
+    dataCompleteness: 100,
+    aiSummary: 'Tu mes más eficiente este año. Has reducido las emisiones de carbono en un 18% comparado con el periodo anterior.',
+    aiRecommendations: [
+      {
+        title: 'Optimiza el aire acondicionado',
+        description: 'Programa el AC a 24°C en lugar de 20°C durante las noches.',
+        estimatedSavings: '$15,000 COP/mes',
+        impact: 'high'
+      },
+      {
+        title: 'Cambia a iluminación LED',
+        description: 'Reemplaza las 5 bombillas restantes por LED para ahorrar un 12% adicional.',
+        estimatedSavings: '$8,000 COP/mes',
+        impact: 'medium'
+      }
+    ]
+  },
+  {
+    id: 'r2',
+    period: 'Julio 2023',
+    periodDate: '2023-07-01',
+    status: 'complete',
+    consumptionKwh: 388,
+    savingsCop: 31200,
+    treesSaved: 3,
+    co2OffsetKg: 65.31,
+    dataCompleteness: 100,
+    aiSummary: 'Buen mes con mejoras constantes. El consumo nocturno disminuyó significativamente.',
+    aiRecommendations: [
+      {
+        title: 'Desconecta los dispositivos en standby',
+        description: 'Tus electrodomésticos en standby consumen un 8% de tu energía total.',
+        estimatedSavings: '$10,000 COP/mes',
+        impact: 'medium'
+      }
+    ]
+  },
+  {
+    id: 'r3',
+    period: 'Junio 2023',
+    periodDate: '2023-06-01',
+    status: 'complete',
+    consumptionKwh: 412,
+    savingsCop: 12800,
+    treesSaved: 1,
+    co2OffsetKg: 21.77,
+    dataCompleteness: 100,
+    aiSummary: 'Mes con consumo elevado debido a las altas temperaturas. Se recomienda optimizar la climatización.',
+    aiRecommendations: [
+      {
+        title: 'Usa ventiladores de techo',
+        description: 'Combinar ventiladores con AC reduce el consumo de climatización en un 30%.',
+        estimatedSavings: '$20,000 COP/mes',
+        impact: 'high'
+      }
+    ]
+  },
+  {
+    id: 'r4',
+    period: 'Mayo 2023',
+    periodDate: '2023-05-01',
+    status: 'complete',
+    consumptionKwh: 356,
+    savingsCop: 38900,
+    treesSaved: 4,
+    co2OffsetKg: 87.08,
+    dataCompleteness: 100,
+    aiSummary: 'Excelente mes de ahorro. Tus hábitos de uso durante horas valle están dando resultados.',
+    aiRecommendations: [
+      {
+        title: 'Programa la lavadora en horario valle',
+        description: 'Usar la lavadora después de las 10 PM ahorra un 8% en la factura.',
+        estimatedSavings: '$12,000 COP/mes',
+        impact: 'medium'
+      }
+    ]
+  },
+  {
+    id: 'r5',
+    period: 'Abril 2023',
+    periodDate: '2023-04-01',
+    status: 'complete',
+    consumptionKwh: 395,
+    savingsCop: 25400,
+    treesSaved: 2,
+    co2OffsetKg: 43.54,
+    dataCompleteness: 100,
+    aiSummary: 'Mes estable con oportunidades de mejora en el uso del calentador de agua.',
+    aiRecommendations: [
+      {
+        title: 'Reduce el tiempo de ducha',
+        description: 'Reducir 2 minutos cada ducha puede ahorrar hasta 15 kWh/mes.',
+        estimatedSavings: '$9,000 COP/mes',
+        impact: 'low'
+      }
+    ]
+  }
+];

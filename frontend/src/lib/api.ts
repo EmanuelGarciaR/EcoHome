@@ -3,11 +3,13 @@ import {
   TimeSeriesPoint,
   RangePoint,
   StatsSummary,
+  MonthlyReport,
   mockLatestReading,
   mockHourlyData,
   mockDailyData,
   mockRangeData,
-  mockSummary
+  mockSummary,
+  mockReports
 } from './mockData';
 
 // Estas firmas NO cambian cuando llegue el backend real.
@@ -32,3 +34,20 @@ export async function getRangeData(period: 'mensual' | 'trimestral' | 'anual'): 
 export async function getSummary(deviceId?: string): Promise<StatsSummary> {
   return Promise.resolve(mockSummary);
 }
+
+// ── Reports ────────────────────────────────────────────────────────
+
+export async function getReports(): Promise<MonthlyReport[]> {
+  return Promise.resolve(mockReports);
+}
+
+export async function getLatestReport(): Promise<MonthlyReport | null> {
+  const completed = mockReports.filter(r => r.status === 'complete');
+  return Promise.resolve(completed[0] ?? null);
+}
+
+export async function getReportById(id: string): Promise<MonthlyReport | null> {
+  const found = mockReports.find(r => r.id === id);
+  return Promise.resolve(found ?? null);
+}
+
