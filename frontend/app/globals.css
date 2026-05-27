@@ -36,6 +36,28 @@
   .btn-secondary {
     @apply inline-flex items-center justify-center bg-brand-soft text-brand hover:bg-brand hover:text-white rounded-2xl px-4 py-2 font-medium transition-colors;
   }
+
+  .prose-custom h2 {
+    @apply text-[18px] font-bold text-text-primary mt-8 mb-3 pb-2 border-b border-border-subtle;
+  }
+  .prose-custom h3 {
+    @apply text-[15px] font-semibold text-text-primary mt-5 mb-2;
+  }
+  .prose-custom p {
+    @apply text-[14px] text-text-secondary leading-relaxed mb-4;
+  }
+  .prose-custom ul {
+    @apply list-disc pl-5 mb-4 space-y-1;
+  }
+  .prose-custom ul li {
+    @apply text-[14px] text-text-secondary leading-relaxed;
+  }
+  .prose-custom strong {
+    @apply text-text-primary font-semibold;
+  }
+  .prose-custom a {
+    @apply text-brand hover:underline cursor-pointer;
+  }
 }
 
 body {
