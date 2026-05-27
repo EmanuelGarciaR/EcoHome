@@ -15,7 +15,15 @@ export default function Home() {
   const [summary, setSummary] = useState<StatsSummary | null>(null);
 
   useEffect(() => {
+    // Initial fetch
     getSummary().then(setSummary);
+
+    // Polling every 5 seconds
+    const intervalId = setInterval(() => {
+      getSummary().then(setSummary);
+    }, 5000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   if (!summary) {

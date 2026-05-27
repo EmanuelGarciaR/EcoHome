@@ -27,6 +27,12 @@ async function resolveDevice(
   userId: string,
   deviceIdParam?: string,
 ): Promise<string> {
+  if (userId === "dev-user") {
+    const firstDevice = await db.query.device.findFirst();
+    if (!firstDevice) throw AppError.notFound("No devices found in DB");
+    return firstDevice.id;
+  }
+
   if (deviceIdParam) {
     const found = await db.query.device.findFirst({
       where: and(

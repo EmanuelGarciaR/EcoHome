@@ -5,6 +5,7 @@ import { auth } from "./auth/index.js";
 import { env } from "./lib/env.js";
 import { errorHandler } from "./middleware/error.middleware.js";
 import healthRoutes from "./routes/health.routes.js";
+import ingestRoutes from "./routes/ingest.routes.js";
 import v1Routes from "./routes/index.js";
 
 const app = express();
@@ -28,10 +29,13 @@ app.use(express.urlencoded({ extended: true }));
 // ── 4. Public routes ───────────────────────────────────────────────
 app.use("/api/health", healthRoutes);
 
-// ── 5. Protected v1 API routes ─────────────────────────────────────
+// ── 5. IoT device ingestion (API-key auth, not session auth) ───────
+app.use("/api/v1/ingest", ingestRoutes);
+
+// ── 6. Protected v1 API routes ─────────────────────────────────────
 app.use("/api/v1", v1Routes);
 
-// ── 6. Centralized error handler (must be last) ────────────────────
+// ── 7. Centralized error handler (must be last) ────────────────────
 app.use(errorHandler);
 
 export default app;

@@ -1,0 +1,26 @@
+[Unit]
+Description=EcoHome PZEM-004T Data Collector
+Documentation=https://github.com/EmanuelGarciaR/EcoHome
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/ecohome-collector
+ExecStart=/usr/bin/python3 -m pzem_collector.main
+Restart=always
+RestartSec=10
+EnvironmentFile=/opt/ecohome-collector/.env
+
+# Security hardening
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=read-only
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=ecohome-collector
+
+[Install]
+WantedBy=multi-user.target

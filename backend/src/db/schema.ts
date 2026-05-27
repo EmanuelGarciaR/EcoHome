@@ -106,6 +106,7 @@ export const reading = pgTable("reading", {
   voltageV: real("voltage_v").notNull(),
   currentA: real("current_a").notNull(),
   powerW: real("power_w").notNull(),
+  energyKwh: real("energy_kwh"),
   powerFactor: real("power_factor"),
   frequencyHz: real("frequency_hz"),
 });

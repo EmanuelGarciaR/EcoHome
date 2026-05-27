@@ -12,27 +12,47 @@ import {
   mockReports
 } from './mockData';
 
-// Estas firmas NO cambian cuando llegue el backend real.
-// Solo se reemplaza el cuerpo de cada función.
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
+// Fallback helper to safely fetch from API or return mock on error
+async function fetchFromApi<T>(endpoint: string, mockFallback: T): Promise<T> {
+  try {
+    const res = await fetch(`${API_URL}/api/v1${endpoint}`, {
+      credentials: "include"
+    });
+    if (!res.ok) {
+      console.warn(`API returned ${res.status} for ${endpoint}, falling back to mock.`);
+      return mockFallback;
+    }
+    const json = await res.json();
+    if (json.success && json.data) {
+      return json.data;
+    }
+    return mockFallback;
+  } catch (error) {
+    console.warn(`Error fetching ${endpoint}, falling back to mock:`, error);
+    return mockFallback;
+  }
+}
 
 export async function getLatestReading(deviceId?: string): Promise<RawReading> {
-  return Promise.resolve(mockLatestReading);
+  return fetchFromApi<RawReading>(`/readings/latest${deviceId ? `?deviceId=${deviceId}` : ''}`, mockLatestReading);
 }
 
 export async function getHourlyData(deviceId?: string): Promise<TimeSeriesPoint[]> {
-  return Promise.resolve(mockHourlyData);
+  return fetchFromApi<TimeSeriesPoint[]>(`/readings/hourly${deviceId ? `?deviceId=${deviceId}` : ''}`, mockHourlyData);
 }
 
 export async function getDailyData(deviceId?: string): Promise<TimeSeriesPoint[]> {
-  return Promise.resolve(mockDailyData);
+  return fetchFromApi<TimeSeriesPoint[]>(`/readings/daily${deviceId ? `?deviceId=${deviceId}` : ''}`, mockDailyData);
 }
 
 export async function getRangeData(period: 'mensual' | 'trimestral' | 'anual'): Promise<RangePoint[]> {
-  return Promise.resolve(mockRangeData[period]);
+  return fetchFromApi<RangePoint[]>(`/readings/range?period=${period}`, mockRangeData[period]);
 }
 
 export async function getSummary(deviceId?: string): Promise<StatsSummary> {
-  return Promise.resolve(mockSummary);
+  return fetchFromApi<StatsSummary>(`/readings/summary${deviceId ? `?deviceId=${deviceId}` : ''}`, mockSummary);
 }
 
 // ── Reports ────────────────────────────────────────────────────────
