@@ -1,6 +1,6 @@
 'use client';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
-import { MonthlyReport, calcFunFacts } from '@/src/lib/mockData';
+import { MonthlyReport, calcFunFacts } from '@/lib/mockData';
 
 interface ReportPDFProps {
   report: MonthlyReport;
@@ -307,10 +307,10 @@ export default function ReportPDF({ report }: ReportPDFProps) {
                 : idx % 2 === 0 ? styles.trendRowOdd : styles.trendRowEven;
               return (
                 <View key={idx} style={[styles.trendRow, rowStyle]}>
-                  <Text style={[styles.trendCell, styles.colW25, isLast && { fontWeight: 'bold' }]}>
+                  <Text style={[styles.trendCell, styles.colW25, isLast ? { fontWeight: 'bold' } : {}]}>
                     {t.month}{isLast ? ' (actual)' : ''}
                   </Text>
-                  <Text style={[styles.trendCell, styles.colW35, isLast && { fontWeight: 'bold', color: '#1D9E75' }]}>
+                  <Text style={[styles.trendCell, styles.colW35, isLast ? { fontWeight: 'bold', color: '#1D9E75' } : {}]}>
                     {t.kwh} kWh
                   </Text>
                   <Text style={[

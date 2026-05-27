@@ -45,7 +45,7 @@ export default function InsightsPanel() {
   }
 
   return (
-    <aside className="w-[300px] flex flex-col gap-4 transition-all duration-300">
+    <aside className="w-full lg:w-[300px] flex flex-col gap-4 transition-all duration-300">
       {/* Header */}
       <header className="flex justify-between items-center mb-1">
         <div className="flex items-center gap-2">

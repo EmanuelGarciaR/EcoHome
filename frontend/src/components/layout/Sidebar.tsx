@@ -16,7 +16,7 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="w-[240px] bg-app-card border-r border-border-light p-5 flex flex-col justify-between h-[calc(100vh-64px)] sticky top-[64px]">
+    <aside className="hidden lg:flex w-[240px] flex-shrink-0 bg-app-card border-r border-border-light p-5 flex-col justify-between h-[calc(100vh-64px)] sticky top-[64px] z-10">
 
       {/* Top Area */}
       <div>

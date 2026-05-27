@@ -1,13 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import Header from '@/src/components/layout/Header';
-import Sidebar from '@/src/components/layout/Sidebar';
-import AlertCard from '@/src/components/alerts/AlertCard';
-import AchievementCard from '@/src/components/alerts/AchievementCard';
-import MilestoneProgress from '@/src/components/alerts/MilestoneProgress';
-import AlertHistoryDrawer from '@/src/components/alerts/AlertHistoryDrawer';
-import { Alert, mockAlertKpis, mockAlerts, mockOlderAlerts, mockAchievements, mockNextMilestone } from '@/src/lib/mockData';
+import Header from '@/components/layout/Header';
+import Sidebar from '@/components/layout/Sidebar';
+import AlertCard from '@/components/alerts/AlertCard';
+import AchievementCard from '@/components/alerts/AchievementCard';
+import MilestoneProgress from '@/components/alerts/MilestoneProgress';
+import AlertHistoryDrawer from '@/components/alerts/AlertHistoryDrawer';
+import { Alert, mockAlertKpis, mockAlerts, mockOlderAlerts, mockAchievements, mockNextMilestone } from '@/lib/mockData';
 import { Bell, Leaf, Zap, Calendar, X, Loader2 } from 'lucide-react';
 
 export default function AlertsPage() {
@@ -69,12 +69,12 @@ export default function AlertsPage() {
     <div className="min-h-screen bg-app-bg font-sans">
       <Header />
       <div className="max-w-[1440px] mx-auto px-6 py-6">
-        <div className="grid grid-cols-[240px_1fr] gap-8 items-start">
+        <div className="flex flex-col lg:flex-row gap-8 items-start">
           <Sidebar />
           
           <main className="flex flex-col w-full h-full overflow-hidden">
             {/* KPI Row */}
-            <div className="grid grid-cols-4 gap-4 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
               {kpis.map((kpi, i) => (
                 <div key={i} className={`bg-white border rounded-[12px] p-4 flex items-center gap-4 shadow-sm ${kpi.border}`}>
                   <div className={`w-12 h-12 rounded-full flex items-center justify-center ${kpi.iconBg}`}>
@@ -88,7 +88,7 @@ export default function AlertsPage() {
               ))}
             </div>
 
-            <div className="flex gap-8 items-start w-full">
+            <div className="flex flex-col lg:flex-row gap-8 items-start w-full">
               {/* Left Column - Smart Alerts */}
               <div className="flex-1 flex flex-col min-w-0">
                 <header className="flex justify-between items-center mb-6">
@@ -137,7 +137,7 @@ export default function AlertsPage() {
               </div>
 
               {/* Right Column - Achievements */}
-              <div className="w-[320px] flex-shrink-0 flex flex-col">
+              <div className="w-full lg:w-[320px] flex-shrink-0 flex flex-col">
                 <header className="flex justify-between items-center mb-6">
                   <div className="flex items-center gap-2">
                     <h2 className="text-[18px] font-bold text-text-primary">Logros</h2>

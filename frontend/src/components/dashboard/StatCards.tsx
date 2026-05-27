@@ -1,6 +1,6 @@
 import React from 'react';
 import { Zap, DollarSign, PiggyBank, ArrowUpRight } from 'lucide-react';
-import { StatsSummary } from '@/src/lib/mockData';
+import { StatsSummary } from '@/lib/mockData';
 
 interface StatCardsProps {
   summary: StatsSummary;
@@ -38,7 +38,7 @@ export default function StatCards({ summary }: StatCardsProps) {
   ];
 
   return (
-    <section aria-label="Key Metrics" className="grid grid-cols-3 gap-4">
+    <section aria-label="Key Metrics" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {stats.map((stat, i) => (
         <article key={i} className="card flex items-center justify-between h-[110px]">
           <div className="flex items-center gap-4">

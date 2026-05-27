@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowDownRight, ArrowUpRight } from 'lucide-react';
-import { StatsSummary } from '@/src/lib/mockData';
+import { StatsSummary } from '@/lib/mockData';
 
 interface ConsumptionKPIsProps {
   summary: StatsSummary;

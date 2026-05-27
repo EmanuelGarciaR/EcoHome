@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Download, Share2, Zap, CreditCard, TreePine, ShieldCheck, CheckCircle2, Eye } from 'lucide-react';
-import { MonthlyReport } from '@/src/lib/mockData';
+import { MonthlyReport } from '@/lib/mockData';
 import dynamic from 'next/dynamic';
 import ReportPDF from './ReportPDF';
 import ReportViewModal from './ReportViewModal';

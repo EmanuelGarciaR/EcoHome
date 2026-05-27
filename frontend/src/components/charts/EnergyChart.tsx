@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { TimeSeriesPoint } from '@/src/lib/mockData';
-import { getHourlyData, getDailyData } from '@/src/lib/api';
+import { TimeSeriesPoint } from '@/lib/mockData';
+import { getHourlyData, getDailyData } from '@/lib/api';
 
 interface EnergyChartProps {
   mode: "hourly" | "daily";
@@ -66,7 +66,7 @@ export default function EnergyChart({ mode, onModeChange }: EnergyChartProps) {
       </header>
 
       <div className="flex-1 w-full -ml-4 min-h-0">
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
           <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 24 }}>
             <defs>
               <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Achievement } from '@/src/lib/mockData';
+import { Achievement } from '@/lib/mockData';
 import { Leaf, Zap, Cloud, Sun } from 'lucide-react';
 
 interface AchievementCardProps {
