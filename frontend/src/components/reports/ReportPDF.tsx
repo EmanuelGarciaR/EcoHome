@@ -1,6 +1,6 @@
 'use client';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
-import { MonthlyReport, calcFunFacts } from '@/src/lib/mockData';
+import { MonthlyReport, calcFunFacts } from '@/lib/mockData';
 
 interface ReportPDFProps {
   report: MonthlyReport;

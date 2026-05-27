@@ -1,14 +1,14 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Header from '@/src/components/layout/Header';
-import Sidebar from '@/src/components/layout/Sidebar';
-import StatCards from '@/src/components/dashboard/StatCards';
-import EnergyChart from '@/src/components/charts/EnergyChart';
-import ApplianceTable from '@/src/components/dashboard/ApplianceTable';
-import InsightsPanel from '@/src/components/dashboard/InsightsPanel';
-import { getSummary } from '@/src/lib/api';
-import { StatsSummary } from '@/src/lib/mockData';
+import Header from '@/components/layout/Header';
+import Sidebar from '@/components/layout/Sidebar';
+import StatCards from '@/components/dashboard/StatCards';
+import EnergyChart from '@/components/charts/EnergyChart';
+import ApplianceTable from '@/components/dashboard/ApplianceTable';
+import InsightsPanel from '@/components/dashboard/InsightsPanel';
+import { getSummary } from '@/lib/api';
+import { StatsSummary } from '@/lib/mockData';
 
 export default function Home() {
   const [chartMode, setChartMode] = useState<"hourly" | "daily">("hourly");
@@ -26,16 +26,18 @@ export default function Home() {
     <div className="min-h-screen flex flex-col w-full">
       <Header />
       <div className="w-full px-6 py-6 flex-grow">
-        <div className="max-w-[1440px] mx-auto w-full grid grid-cols-[240px_1fr_auto] gap-6 items-start">
+        <div className="max-w-[1440px] mx-auto w-full flex flex-col lg:flex-row gap-6 items-start">
           <Sidebar />
           
-          <main className="flex flex-col gap-6 w-full min-w-0">
+          <main className="flex flex-col gap-6 w-full lg:flex-1 min-w-0">
             <StatCards summary={summary} />
             <EnergyChart mode={chartMode} onModeChange={setChartMode} />
             <ApplianceTable />
           </main>
           
-          <InsightsPanel />
+          <div className="w-full lg:w-auto">
+            <InsightsPanel />
+          </div>
         </div>
       </div>
     </div>

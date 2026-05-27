@@ -1,5 +1,5 @@
 import React from 'react';
-import { Milestone } from '@/src/lib/mockData';
+import { Milestone } from '@/lib/mockData';
 import { Leaf } from 'lucide-react';
 
 interface MilestoneProgressProps {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert } from '@/src/lib/mockData';
+import { Alert } from '@/lib/mockData';
 import { TrendingDown, AlertCircle, Leaf, Calendar, Award, Check, CheckCheck } from 'lucide-react';
 
 interface AlertCardProps {

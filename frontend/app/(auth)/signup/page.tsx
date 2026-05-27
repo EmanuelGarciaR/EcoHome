@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Mail, Lock, User, AlertCircle } from 'lucide-react';
-import { AuthInput } from '@/src/components/ui/AuthInput';
-import { AuthButton } from '@/src/components/ui/AuthButton';
-import { signUp } from '@/src/lib/auth-client';
+import { AuthInput } from '@/components/ui/AuthInput';
+import { AuthButton } from '@/components/ui/AuthButton';
+import { signUp } from '@/lib/auth-client';
 
 export default function SignUpPage() {
   const router = useRouter();

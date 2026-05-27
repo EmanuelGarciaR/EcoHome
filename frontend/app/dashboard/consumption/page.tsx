@@ -1,16 +1,16 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Header from '@/src/components/layout/Header';
-import Sidebar from '@/src/components/layout/Sidebar';
-import InsightsPanel from '@/src/components/dashboard/InsightsPanel';
+import Header from '@/components/layout/Header';
+import Sidebar from '@/components/layout/Sidebar';
+import InsightsPanel from '@/components/dashboard/InsightsPanel';
 
-import ViewRangeFilter from '@/src/components/consumption/ViewRangeFilter';
-import ConsumptionKPIs from '@/src/components/consumption/ConsumptionKPIs';
-import ConsumptionTrendsChart from '@/src/components/consumption/ConsumptionTrendsChart';
+import ViewRangeFilter from '@/components/consumption/ViewRangeFilter';
+import ConsumptionKPIs from '@/components/consumption/ConsumptionKPIs';
+import ConsumptionTrendsChart from '@/components/consumption/ConsumptionTrendsChart';
 
-import { getRangeData, getSummary } from '@/src/lib/api';
-import { RangePoint, StatsSummary } from '@/src/lib/mockData';
+import { getRangeData, getSummary } from '@/lib/api';
+import { RangePoint, StatsSummary } from '@/lib/mockData';
 
 export type TimeRange = 'mensual' | 'trimestral' | 'anual';
 
@@ -35,10 +35,10 @@ export default function ConsumptionPage() {
     <div className="min-h-screen bg-app-bg font-sans">
       <Header />
       <div className="max-w-[1440px] mx-auto px-6 py-6">
-        <div className="grid grid-cols-[240px_1fr_auto] gap-6 items-start">
+        <div className="flex flex-col lg:flex-row gap-6 items-start">
           <Sidebar />
           
-          <main className="flex flex-col w-full h-full overflow-hidden">
+          <main className="flex flex-col w-full h-full overflow-hidden lg:flex-1">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-[20px] font-semibold text-text-primary">
                 Historial de Consumo
@@ -57,7 +57,7 @@ export default function ConsumptionPage() {
             </div>
           </main>
 
-          <div className="sticky top-[88px]">
+          <div className="w-full lg:w-auto lg:sticky lg:top-[88px]">
             <InsightsPanel />
           </div>
         </div>

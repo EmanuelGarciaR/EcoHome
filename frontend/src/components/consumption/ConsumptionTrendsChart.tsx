@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { ComposedChart, Area, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { RangePoint, StatsSummary } from '@/src/lib/mockData';
+import { RangePoint, StatsSummary } from '@/lib/mockData';
 import { ArrowDown } from 'lucide-react';
 import { TimeRange } from '@/app/dashboard/consumption/page';
 

@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { FileText, Eye, Download, MoreVertical, TreePine, ChevronRight } from 'lucide-react';
-import { MonthlyReport } from '@/src/lib/mockData';
+import { MonthlyReport } from '@/lib/mockData';
 import dynamic from 'next/dynamic';
 import ReportPDF from './ReportPDF';
 import ReportViewModal from './ReportViewModal';

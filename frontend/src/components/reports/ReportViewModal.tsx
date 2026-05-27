@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { X, Download, Leaf, Check } from 'lucide-react';
-import { MonthlyReport, calcFunFacts } from '@/src/lib/mockData';
+import { MonthlyReport, calcFunFacts } from '@/lib/mockData';
 import dynamic from 'next/dynamic';
 import ReportPDF from './ReportPDF';
 
