@@ -1,0 +1,67 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import Header from '@/components/layout/Header';
+import Sidebar from '@/components/layout/Sidebar';
+import StatCards from '@/components/dashboard/StatCards';
+import EnergyChart from '@/components/charts/EnergyChart';
+import ApplianceTable from '@/components/dashboard/ApplianceTable';
+import InsightsPanel from '@/components/dashboard/InsightsPanel';
+import { getSummary } from '@/lib/api';
+import { StatsSummary } from '@/lib/mockData';
+import { useRouter } from 'next/navigation';
+import { useSession } from '@/lib/auth-client';
+
+export default function DashboardPage() {
+  const router = useRouter();
+  const { data: session, isPending: sessionPending } = useSession();
+  const [chartMode, setChartMode] = useState<"hourly" | "daily">("hourly");
+  const [summary, setSummary] = useState<StatsSummary | null>(null);
+
+  useEffect(() => {
+    // Initial fetch
+    getSummary().then(setSummary);
+
+    // Polling every 5 seconds
+    const intervalId = setInterval(() => {
+      getSummary().then(setSummary);
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+    if (!sessionPending && !session) {
+      router.push('/login');
+    }
+  }, [session, sessionPending, router]);
+
+  if (sessionPending || !summary) {
+    return <div className="min-h-screen flex items-center justify-center">Cargando...</div>;
+  }
+
+  if (!session) {
+    return null;
+  }
+
+  return (
+    <div className="min-h-screen flex flex-col w-full">
+      <Header />
+      <div className="w-full px-6 py-6 flex-grow">
+        <div className="max-w-[1440px] mx-auto w-full flex flex-col lg:flex-row gap-6 items-start">
+          <Sidebar />
+          
+          <main className="flex flex-col gap-6 w-full lg:flex-1 min-w-0">
+            <StatCards summary={summary} />
+            <EnergyChart mode={chartMode} onModeChange={setChartMode} />
+            <ApplianceTable />
+          </main>
+          
+          <div className="w-full lg:w-auto">
+            <InsightsPanel />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

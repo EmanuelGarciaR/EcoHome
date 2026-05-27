@@ -8,11 +8,11 @@ import { Home, History, Bell, FileText } from 'lucide-react';
 export default function MobileNav() {
   const pathname = usePathname();
 
-  // Do not show MobileNav on auth pages like /login or /signup
-  if (pathname === '/login' || pathname === '/signup') return null;
+  // Do not show MobileNav on auth or landing pages
+  if (pathname === '/' || pathname === '/login' || pathname === '/signup') return null;
 
   const links = [
-    { href: '/', label: 'Home', icon: Home },
+    { href: '/dashboard', label: 'Home', icon: Home },
     { href: '/dashboard/consumption', label: 'Historial', icon: History },
     { href: '/dashboard/alerts', label: 'Alertas', icon: Bell },
     { href: '/dashboard/reports', label: 'Reportes', icon: FileText },

@@ -1,4 +1,4 @@
-import LegalPageLayout from '@/src/components/legal/LegalPageLayout';
+import LegalPageLayout from '@/components/legal/LegalPageLayout';
 
 export const metadata = {
   title: 'Términos y Condiciones — EcoHome',

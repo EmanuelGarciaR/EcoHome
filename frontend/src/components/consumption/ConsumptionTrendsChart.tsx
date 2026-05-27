@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ComposedChart, Area, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { RangePoint, StatsSummary } from '@/lib/mockData';
 import { ArrowDown } from 'lucide-react';
@@ -13,6 +13,11 @@ interface ConsumptionTrendsChartProps {
 }
 
 export default function ConsumptionTrendsChart({ timeRange, data, summary }: ConsumptionTrendsChartProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
@@ -47,56 +52,58 @@ export default function ConsumptionTrendsChart({ timeRange, data, summary }: Con
         </div>
       </header>
 
-      <div className="h-[320px] w-full -ml-4 mt-2" style={{ minWidth: '100%', minHeight: '100%' }}>
-        <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
-          <ComposedChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-            <defs>
-              <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--color-brand)" stopOpacity={0.08}/>
-                <stop offset="95%" stopColor="var(--color-brand)" stopOpacity={0.01}/>
-              </linearGradient>
-            </defs>
-            <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="var(--color-border-subtle)" />
-            <XAxis 
-              dataKey="label" 
-              axisLine={false} 
-              tickLine={false} 
-              tick={{ fontSize: 11, fill: 'var(--color-text-muted)' }}
-              dy={10}
-            />
-            <YAxis 
-              axisLine={false} 
-              tickLine={false} 
-              tick={{ fontSize: 11, fill: 'var(--color-text-muted)' }}
-            />
-            <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'var(--color-border-subtle)', strokeWidth: 2, strokeDasharray: '4 4' }} />
-            
-            <Area 
-              type="monotone" 
-              dataKey="current_kwh" 
-              stroke="none" 
-              fillOpacity={1} 
-              fill="url(#areaGradient)" 
-            />
-            <Line 
-              type="monotone" 
-              dataKey="previous_kwh" 
-              stroke="var(--color-text-muted)" 
-              strokeWidth={2}
-              strokeDasharray="4 4"
-              dot={false}
-              activeDot={{ r: 4, fill: 'var(--color-text-muted)', stroke: '#fff', strokeWidth: 2 }}
-            />
-            <Line 
-              type="monotone" 
-              dataKey="current_kwh" 
-              stroke="var(--color-brand)" 
-              strokeWidth={2.5}
-              dot={false}
-              activeDot={{ r: 6, fill: 'var(--color-brand)', stroke: '#fff', strokeWidth: 2 }}
-            />
-          </ComposedChart>
-        </ResponsiveContainer>
+      <div className="h-[320px] w-full -ml-4 mt-2" style={{ minWidth: 0, minHeight: 200 }}>
+        {mounted && (
+          <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
+            <ComposedChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <defs>
+                <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="var(--color-brand)" stopOpacity={0.08}/>
+                  <stop offset="95%" stopColor="var(--color-brand)" stopOpacity={0.01}/>
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="var(--color-border-subtle)" />
+              <XAxis 
+                dataKey="label" 
+                axisLine={false} 
+                tickLine={false} 
+                tick={{ fontSize: 11, fill: 'var(--color-text-muted)' }}
+                dy={10}
+              />
+              <YAxis 
+                axisLine={false} 
+                tickLine={false} 
+                tick={{ fontSize: 11, fill: 'var(--color-text-muted)' }}
+              />
+              <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'var(--color-border-subtle)', strokeWidth: 2, strokeDasharray: '4 4' }} />
+              
+              <Area 
+                type="monotone" 
+                dataKey="current_kwh" 
+                stroke="none" 
+                fillOpacity={1} 
+                fill="url(#areaGradient)" 
+              />
+              <Line 
+                type="monotone" 
+                dataKey="previous_kwh" 
+                stroke="var(--color-text-muted)" 
+                strokeWidth={2}
+                strokeDasharray="4 4"
+                dot={false}
+                activeDot={{ r: 4, fill: 'var(--color-text-muted)', stroke: '#fff', strokeWidth: 2 }}
+              />
+              <Line 
+                type="monotone" 
+                dataKey="current_kwh" 
+                stroke="var(--color-brand)" 
+                strokeWidth={2.5}
+                dot={false}
+                activeDot={{ r: 6, fill: 'var(--color-brand)', stroke: '#fff', strokeWidth: 2 }}
+              />
+            </ComposedChart>
+          </ResponsiveContainer>
+        )}
       </div>
 
       {/* Stats Row */}

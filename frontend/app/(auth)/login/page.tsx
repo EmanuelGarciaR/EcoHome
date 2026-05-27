@@ -26,7 +26,7 @@ export default function LoginPage() {
     });
 
     if (signInError) {
-      setError(signInError.message || 'Failed to sign in. Please check your credentials.');
+      setError(signInError.message || 'Error al iniciar sesión. Por favor, revisa tus credenciales.');
       setIsLoading(false);
     } else {
       router.push('/dashboard');
@@ -37,8 +37,8 @@ export default function LoginPage() {
   return (
     <div>
       <div className="mb-8 text-center">
-        <h3 className="text-2xl font-bold text-slate-900">Welcome back</h3>
-        <p className="text-slate-500 mt-2 text-sm">Sign in to your account to continue</p>
+        <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight mb-2">Bienvenido de nuevo</h2>
+        <p className="text-text-secondary text-sm">Inicia sesión en tu cuenta para continuar hacia un hogar más verde.</p>
       </div>
 
       {error && (
@@ -50,18 +50,18 @@ export default function LoginPage() {
 
       <form className="space-y-5" onSubmit={handleSubmit}>
         <AuthInput
-          label="Email address"
+          label="Correo electrónico"
           icon={Mail}
           type="email"
           autoComplete="email"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@example.com"
+          placeholder="tucorreo@ejemplo.com"
         />
 
         <AuthInput
-          label="Password"
+          label="Contraseña"
           icon={Lock}
           type="password"
           autoComplete="current-password"
@@ -71,25 +71,17 @@ export default function LoginPage() {
           placeholder="••••••••"
         />
 
-        <div className="flex items-center justify-between mt-2">
-          <div className="text-sm">
-            <Link href="#" className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors">
-              Forgot your password?
-            </Link>
-          </div>
-        </div>
-
         <div className="pt-2">
           <AuthButton type="submit" isLoading={isLoading}>
-            Sign in
+            Iniciar sesión
           </AuthButton>
         </div>
       </form>
 
       <div className="mt-8 text-center text-sm">
-        <span className="text-slate-500">Don't have an account? </span>
-        <Link href="/signup" className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors">
-          Sign up now
+        <span className="text-text-secondary">¿No tienes una cuenta? </span>
+        <Link href="/signup" className="font-medium text-brand hover:text-brand-hover transition-colors">
+          Regístrate ahora
         </Link>
       </div>
     </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { TimeSeriesPoint } from '@/lib/mockData';
 import { getHourlyData, getDailyData } from '@/lib/api';
@@ -12,23 +12,53 @@ interface EnergyChartProps {
 
 export default function EnergyChart({ mode, onModeChange }: EnergyChartProps) {
   const [data, setData] = useState<TimeSeriesPoint[]>([]);
+  const [mounted, setMounted] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
-      const newData = mode === "hourly"
+      const rawData = mode === "hourly"
         ? await getHourlyData()
         : await getDailyData();
-      setData(newData);
+        
+      const formattedData = rawData.map((d: any) => {
+        let label = d.label;
+        if (!label && d.timestamp) {
+          // Adjust timezone or parse correctly
+          const date = new Date(d.timestamp.replace(' ', 'T'));
+          if (mode === "hourly") {
+            label = date.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+          } else {
+            label = date.toLocaleDateString('es-CO', { weekday: 'short' });
+            label = label.charAt(0).toUpperCase() + label.slice(1).replace('.', '');
+          }
+        }
+        return {
+          ...d,
+          label: label || '',
+          avg_power_w: d.avg_power_w ?? d.avgPowerW ?? 0,
+          max_power_w: d.max_power_w ?? d.maxPowerW ?? 0,
+          min_power_w: d.min_power_w ?? d.minPowerW ?? 0,
+          kwh: d.kwh ?? 0,
+        };
+      });
+
+      setData(formattedData);
     };
     fetchData();
   }, [mode]);
+
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-app-darkCard text-white p-3 rounded-xl text-sm shadow-lg">
           <p className="font-semibold mb-1">{label}</p>
           <p className="text-brand font-bold">
-            {payload[0].value} kW
+            {Number(payload[0].value).toFixed(3)} kWh
           </p>
         </div>
       );
@@ -65,44 +95,46 @@ export default function EnergyChart({ mode, onModeChange }: EnergyChartProps) {
         </div>
       </header>
 
-      <div className="flex-1 w-full -ml-4 min-h-0">
-        <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
-          <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 24 }}>
-            <defs>
-              <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--color-brand)" stopOpacity={0.15}/>
-                <stop offset="95%" stopColor="var(--color-brand)" stopOpacity={0.02}/>
-              </linearGradient>
-            </defs>
-            <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="var(--color-border-subtle)" />
-            <XAxis 
-              dataKey="label" 
-              axisLine={false} 
-              tickLine={false} 
-              tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }}
-              dy={10}
-              padding={{ left: 16, right: 16 }}
-            />
-            <YAxis 
-              axisLine={false} 
-              tickLine={false} 
-              tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }}
-              domain={[0, 8]}
-              ticks={[0, 2, 4, 6, 8]}
-              width={25}
-            />
-            <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'var(--color-border-subtle)', strokeWidth: 2, strokeDasharray: '4 4' }} />
-            <Area 
-              type="monotone" 
-              dataKey="kwh" 
-              stroke="var(--color-brand)" 
-              strokeWidth={2.5}
-              fillOpacity={1} 
-              fill="url(#colorValue)" 
-              activeDot={{ r: 6, fill: 'var(--color-brand)', stroke: '#fff', strokeWidth: 2 }}
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+      <div ref={containerRef} className="flex-1 w-full -ml-4" style={{ minHeight: 200, minWidth: 0 }}>
+        {mounted && (
+          <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
+            <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 24 }}>
+              <defs>
+                <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="var(--color-brand)" stopOpacity={0.15}/>
+                  <stop offset="95%" stopColor="var(--color-brand)" stopOpacity={0.02}/>
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="var(--color-border-subtle)" />
+              <XAxis 
+                dataKey="label" 
+                axisLine={false} 
+                tickLine={false} 
+                tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }}
+                dy={10}
+                padding={{ left: 16, right: 16 }}
+              />
+              <YAxis 
+                axisLine={false} 
+                tickLine={false} 
+                tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }}
+                domain={[0, 'auto']}
+                width={35}
+                tickFormatter={(value) => Number(value.toFixed(3)).toString()}
+              />
+              <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'var(--color-border-subtle)', strokeWidth: 2, strokeDasharray: '4 4' }} />
+              <Area 
+                type="monotone" 
+                dataKey="kwh" 
+                stroke="var(--color-brand)" 
+                strokeWidth={2.5}
+                fillOpacity={1} 
+                fill="url(#colorValue)" 
+                activeDot={{ r: 6, fill: 'var(--color-brand)', stroke: '#fff', strokeWidth: 2 }}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        )}
       </div>
     </section>
   );

@@ -28,7 +28,7 @@ export default function SignUpPage() {
     });
 
     if (signUpError) {
-      setError(signUpError.message || 'Failed to create account. Please try again.');
+      setError(signUpError.message || 'Error al crear la cuenta. Por favor, inténtalo de nuevo.');
       setIsLoading(false);
     } else {
       router.push('/dashboard');
@@ -39,8 +39,8 @@ export default function SignUpPage() {
   return (
     <div>
       <div className="mb-8 text-center">
-        <h3 className="text-2xl font-bold text-slate-900">Create an account</h3>
-        <p className="text-slate-500 mt-2 text-sm">Start managing your home energy today</p>
+        <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight mb-2">Crea una cuenta</h2>
+        <p className="text-text-secondary text-sm">Empieza a gestionar la energía de tu hogar hoy mismo y únete a un futuro más sostenible.</p>
       </div>
 
       {error && (
@@ -52,29 +52,29 @@ export default function SignUpPage() {
 
       <form className="space-y-5" onSubmit={handleSubmit}>
         <AuthInput
-          label="Full name"
+          label="Nombre completo"
           icon={User}
           type="text"
           autoComplete="name"
           required
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="Jane Doe"
+          placeholder="Juan Pérez"
         />
 
         <AuthInput
-          label="Email address"
+          label="Correo electrónico"
           icon={Mail}
           type="email"
           autoComplete="email"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@example.com"
+          placeholder="tucorreo@ejemplo.com"
         />
 
         <AuthInput
-          label="Password"
+          label="Contraseña"
           icon={Lock}
           type="password"
           autoComplete="new-password"
@@ -87,15 +87,15 @@ export default function SignUpPage() {
 
         <div className="pt-2">
           <AuthButton type="submit" isLoading={isLoading}>
-            Create account
+            Crear cuenta
           </AuthButton>
         </div>
       </form>
 
       <div className="mt-8 text-center text-sm">
-        <span className="text-slate-500">Already have an account? </span>
-        <Link href="/login" className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors">
-          Sign in
+        <span className="text-text-secondary">¿Ya tienes una cuenta? </span>
+        <Link href="/login" className="font-medium text-brand hover:text-brand-hover transition-colors">
+          Iniciar sesión
         </Link>
       </div>
     </div>

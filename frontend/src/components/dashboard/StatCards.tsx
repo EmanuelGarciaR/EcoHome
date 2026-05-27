@@ -40,25 +40,25 @@ export default function StatCards({ summary }: StatCardsProps) {
   return (
     <section aria-label="Key Metrics" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {stats.map((stat, i) => (
-        <article key={i} className="card flex items-center justify-between h-[110px]">
-          <div className="flex items-center gap-4">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${stat.iconBg}`}>
+        <article key={i} className="card flex items-center justify-between h-[110px] p-4 md:p-5">
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <div className={`shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${stat.iconBg}`}>
               {stat.icon}
             </div>
-            <div>
-              <div className="text-[13px] text-text-muted font-medium mb-1">{stat.label}</div>
-              <div className="text-[24px] font-bold text-text-primary flex items-baseline gap-1">
-                {stat.value}
-                <span className="text-[14px] font-semibold text-text-muted">{stat.unit}</span>
+            <div className="flex-1 min-w-0">
+              <div className="text-[12px] md:text-[13px] text-text-muted font-medium mb-1 truncate">{stat.label}</div>
+              <div className="text-[20px] md:text-[24px] font-bold text-text-primary flex items-baseline gap-1">
+                <span>{stat.value}</span>
+                <span className="text-[12px] md:text-[14px] font-semibold text-text-muted shrink-0">{stat.unit}</span>
               </div>
             </div>
           </div>
           {stat.delta && (
-            <div className={`self-start px-2 py-1 rounded-md text-[12px] font-semibold flex items-center gap-1 ${
+            <div className={`shrink-0 self-start ml-2 px-1.5 py-1 md:px-2 rounded-md text-[11px] md:text-[12px] font-semibold hidden xl:flex items-center gap-0.5 md:gap-1 ${
               stat.isPositive ? 'bg-success-bg text-success-text' : 'bg-red-100 text-red-500'
             }`}>
-              <ArrowUpRight size={14} />
-              {stat.delta}
+              <ArrowUpRight size={14} className="shrink-0" />
+              <span>{stat.delta}</span>
             </div>
           )}
         </article>

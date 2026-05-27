@@ -2,38 +2,67 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Zap, Bell, FileText, Leaf } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { LayoutDashboard, Zap, Bell, FileText, LogOut, ChevronRight } from 'lucide-react';
+import { useSession, signOut } from '@/lib/auth-client';
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { data: session } = useSession();
 
   const navItems = [
-    { name: 'Dashboard', href: '/', icon: LayoutDashboard },
+    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Consumo', href: '/dashboard/consumption', icon: Zap },
     { name: 'Alertas', href: '/dashboard/alerts', icon: Bell },
     { name: 'Reportes', href: '/dashboard/reports', icon: FileText },
   ];
 
+  const userName = session?.user?.name || 'Usuario';
+  const userEmail = session?.user?.email || '';
+  // Build initials for the avatar service
+  const avatarName = userName.replace(/\s+/g, '+');
+
+  const handleSignOut = async () => {
+    await signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push('/login');
+        }
+      }
+    });
+  };
+
   return (
-    <aside className="hidden lg:flex w-[240px] flex-shrink-0 bg-app-card border-r border-border-light p-5 flex-col justify-between h-[calc(100vh-64px)] sticky top-[64px] z-10">
+    <aside className="sidebar-container hidden lg:flex w-[260px] flex-shrink-0 flex-col justify-between h-[calc(100vh-64px)] sticky top-[64px] z-10">
 
       {/* Top Area */}
-      <div>
-        {/* User Profile */}
-        <div className="flex items-center gap-3 mb-8 px-1">
-          <div className="w-10 h-10 rounded-full bg-app-bg overflow-hidden flex-shrink-0">
-            {/* Avatar placeholder */}
-            <img src="https://ui-avatars.com/api/?name=Julian+R&background=EDEEF1&color=141D1C" alt="Julian R." className="w-full h-full object-cover" />
+      <div className="flex flex-col gap-6">
+
+        {/* ── User Profile Card ── */}
+        <div className="sidebar-profile-card">
+          <div className="sidebar-avatar-wrap">
+            <img
+              src={`https://ui-avatars.com/api/?name=${avatarName}&background=29C76C&color=fff&bold=true&size=80`}
+              alt={userName}
+              className="sidebar-avatar-img"
+            />
+            <span className="sidebar-online-dot" />
           </div>
-          <div>
-            <div className="font-bold text-text-primary text-sm">Julian R.</div>
-            <div className="text-text-muted text-xs">Entusiasta Ecológico</div>
+          <div className="min-w-0 flex-1">
+            <div className="sidebar-user-name">{userName}</div>
+            <div className="sidebar-user-email">{userEmail}</div>
           </div>
         </div>
 
-        {/* Nav Items */}
-        <nav className="flex flex-col gap-4">
+        {/* ── Section Label ── */}
+        <div className="sidebar-section-label">
+          <span>MENÚ PRINCIPAL</span>
+          <span className="sidebar-section-line" />
+        </div>
+
+        {/* ── Navigation ── */}
+        <nav className="flex flex-col gap-1">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             const Icon = item.icon;
@@ -42,32 +71,31 @@ export default function Sidebar() {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex items-center gap-6 h-[48px] px-4 rounded-[10px] transition-colors ${isActive
-                  ? 'bg-success-bg text-brand border-l-4 border-brand font-semibold'
-                  : 'text-text-secondary hover:bg-app-bg hover:text-text-primary'
-                  }`}
+                className={`sidebar-nav-item ${isActive ? 'sidebar-nav-active' : ''}`}
               >
-                <Icon size={20} />
-                <span className="text-sm">{item.name}</span>
+                <span className="sidebar-nav-icon-wrap">
+                  <Icon size={18} strokeWidth={isActive ? 2.2 : 1.8} />
+                </span>
+                <span className="sidebar-nav-label">{item.name}</span>
+                {isActive && (
+                  <ChevronRight size={14} className="sidebar-nav-chevron" />
+                )}
               </Link>
             );
           })}
         </nav>
       </div>
 
-      {/* Bottom Area - Eco Status */}
-      {/* <article aria-label="Eco Status" className="bg-success-bg rounded-2xl p-4 border border-border-subtle mt-4">
-        <div className="flex items-center gap-2 mb-2">
-          <Leaf size={16} className="text-brand" />
-          <span className="font-semibold text-text-primary text-sm">Estado Ecológico</span>
-        </div>
-        <p className="text-xs text-brand mb-3 leading-tight font-medium">
-          ¡Estás en el 5% superior de ahorradores de energía en Bogotá este mes!
-        </p>
-        <button className="w-full bg-app-card border border-brand text-brand text-xs font-semibold py-2 rounded-xl shadow-sm hover:bg-brand hover:text-white transition-colors">
-          Ver Logro
+      {/* ── Bottom Area - Sign Out ── */}
+      <div className="sidebar-bottom">
+        <button
+          onClick={handleSignOut}
+          className="sidebar-signout-btn"
+        >
+          <LogOut size={18} />
+          <span>Cerrar sesión</span>
         </button>
-      </article> */}
+      </div>
     </aside>
   );
 }
